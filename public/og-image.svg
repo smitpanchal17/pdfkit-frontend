@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#080810"/>
+  <rect x="60" y="60" width="80" height="80" rx="20" fill="#C6FF00"/>
+  <text x="100" y="118" text-anchor="middle" font-family="sans-serif" font-weight="900" font-size="48" fill="#080810">P</text>
+  <text x="180" y="120" font-family="sans-serif" font-weight="900" font-size="52" fill="#E8E8F2">PDFKit</text>
+  <text x="60" y="200" font-family="sans-serif" font-size="32" fill="#9090A8">Free Online PDF Tools</text>
+  <text x="60" y="280" font-family="sans-serif" font-size="22" fill="#5a5a7a">Compress · Merge · Split · Convert · OCR · Sign · Protect · Edit</text>
+  <text x="60" y="560" font-family="sans-serif" font-size="20" fill="#5a5a7a">allinonepdfmaker.com</text>
+</svg>
