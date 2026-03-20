@@ -1,1 +1,27 @@
+/* PDFKit — Next.js global styles */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
+/* Dark background immediately — no flash of white */
+html, body {
+    background: #0C0C0C;
+    color: #F2F2F2;
+    min-height: 100vh;
+}
+
+/* Loading spinner shown before SPA loads */
+#pdfkit-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #0C0C0C;
+}
+
+/* Hide loading once SPA is ready */
+.spa-loaded #pdfkit-loading {
+    display: none !important;
+}
