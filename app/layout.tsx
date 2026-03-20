@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Analytics } from '@vercel/analytics/next';
 import { CONFIG } from '@/lib/config';
 import '@/styles/globals.css';
 
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Page content — Server Component renders SEO HTML here */}
         {children}
+        <Analytics />
       </body>
     </html>
   );
