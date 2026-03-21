@@ -32,7 +32,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
+      {/* Security headers */}
+      <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
+      <meta httpEquiv="X-Frame-Options" content="DENY" />
+      <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+      {/* Razorpay payment SDK */}
+      <script src="https://checkout.razorpay.com/v1/checkout.js" async />
+    </head>
       <body>
         <div id="pdfkit-loading" aria-hidden="true" />
         {children}
