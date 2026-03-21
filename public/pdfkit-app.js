@@ -6279,7 +6279,7 @@ document.addEventListener('click', (e) => {
 
   window.initPDFKit = function() { injectHTML(); initApp(); };
 
-  // ── Global function exports (called from onclick HTML attributes) ──
+  // ── Global function exports (called from onclick HTML attributes) ── v2
   window.startPayment  = startPayment;
   window.openAuthModal = openAuthModal;
 
