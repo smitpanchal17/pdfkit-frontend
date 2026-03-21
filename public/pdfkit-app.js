@@ -6287,6 +6287,6 @@ document.addEventListener('click', (e) => {
 
   // ── Global function exports (called from onclick HTML attributes) ──
   window.startPayment  = startPayment;
-  window.openAuthModal = openAuthModal; };
+  window.openAuthModal = openAuthModal;
 
 })(window, document);
