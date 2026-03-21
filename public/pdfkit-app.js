@@ -2131,6 +2131,8 @@ async function processInvoiceGenerator() {
   }
 
   function initApp() {
+  // Reset stale dark theme: HTML default is light; only apply saved theme if it's light
+  try { if (localStorage.getItem('theme') === 'dark') { localStorage.removeItem('theme'); } } catch(e) {}
     if (_initialized) return;
     _initialized = true;
     injectCSS();
@@ -2140,7 +2142,7 @@ async function processInvoiceGenerator() {
 
     // Runtime config bridge for Next.js mode
     var w = window;
-    if (w._PDFKIT_API && typeof API !== 'undefined' && !API)
+    if (w._PDFKIT_API && !w.API)
       try { eval('API = ' + JSON.stringify(w._PDFKIT_API)); } catch(e) {}
     if (w._PDFKIT_SUPABASE_URL && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL)
       try { eval('SUPABASE_URL = ' + JSON.stringify(w._PDFKIT_SUPABASE_URL)); } catch(e) {}
@@ -6282,4 +6284,9 @@ document.addEventListener('click', (e) => {
   } else {
     injectHTML(); initApp();
   }
+
+  // ── Global function exports (called from onclick HTML attributes) ──
+  window.startPayment  = typeof startPayment  !== 'undefined' ? startPayment  : function() { console.warn('startPayment not ready'); };
+  window.openAuthModal = typeof openAuthModal !== 'undefined' ? openAuthModal : function() { console.warn('openAuthModal not ready'); };
+
 })(window, document);
