@@ -2162,7 +2162,7 @@ window.addEventListener('load', function() {
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
   // Init Supabase client after deferred supabase.js loads
-  if (!supabaseClient && SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+  if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 });
@@ -2241,7 +2241,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 let supabaseClient = null;
 // Supabase.js is loaded with defer — init after window.load guarantees it's available
 window.addEventListener('load', function initSupabase() {
-  if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
+  if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   }
 }, { once: true });
