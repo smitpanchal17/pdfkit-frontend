@@ -6275,6 +6275,10 @@ document.addEventListener('click', (e) => {
 });
 
 
+
+  // ── Expose to window so onclick attrs can call them ──
+  window.startPayment  = startPayment;
+  window.openAuthModal = openAuthModal;
   }
 
   window.initPDFKit = function() { injectHTML(); initApp(); };
