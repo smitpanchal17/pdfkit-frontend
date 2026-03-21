@@ -6276,9 +6276,65 @@ document.addEventListener('click', (e) => {
 
 
 
-  // ── Expose to window so onclick attrs can call them ──
-  window.startPayment  = startPayment;
-  window.openAuthModal = openAuthModal;
+  // ── Expose ALL onclick functions to window ──
+  window.openAuthModal = typeof openAuthModal === 'function' ? openAuthModal : window.openAuthModal;
+  window.startPayment = typeof startPayment === 'function' ? startPayment : window.startPayment;
+  window.signInWithGoogle = typeof signInWithGoogle === 'function' ? signInWithGoogle : window.signInWithGoogle;
+  window.signInWithApple = typeof signInWithApple === 'function' ? signInWithApple : window.signInWithApple;
+  window.submitAuth = typeof submitAuth === 'function' ? submitAuth : window.submitAuth;
+  window.switchAuthMode = typeof switchAuthMode === 'function' ? switchAuthMode : window.switchAuthMode;
+  window.switchToForgot = typeof switchToForgot === 'function' ? switchToForgot : window.switchToForgot;
+  window.sendPhoneOtp = typeof sendPhoneOtp === 'function' ? sendPhoneOtp : window.sendPhoneOtp;
+  window.showSocialStep = typeof showSocialStep === 'function' ? showSocialStep : window.showSocialStep;
+  window.showPhoneStep = typeof showPhoneStep === 'function' ? showPhoneStep : window.showPhoneStep;
+  window.verifyOtp = typeof verifyOtp === 'function' ? verifyOtp : window.verifyOtp;
+  window.doLogout = typeof doLogout === 'function' ? doLogout : window.doLogout;
+  window.openDashboard = typeof openDashboard === 'function' ? openDashboard : window.openDashboard;
+  window.switchDashTab = typeof switchDashTab === 'function' ? switchDashTab : window.switchDashTab;
+  window.openDevPanel = typeof openDevPanel === 'function' ? openDevPanel : window.openDevPanel;
+  window.closeDevModal = typeof closeDevModal === 'function' ? closeDevModal : window.closeDevModal;
+  window.switchDevTab = typeof switchDevTab === 'function' ? switchDevTab : window.switchDevTab;
+  window.createApiKey = typeof createApiKey === 'function' ? createApiKey : window.createApiKey;
+  window.copyApiKey = typeof copyApiKey === 'function' ? copyApiKey : window.copyApiKey;
+  window.copyNewKey = typeof copyNewKey === 'function' ? copyNewKey : window.copyNewKey;
+  window.revokeApiKey = typeof revokeApiKey === 'function' ? revokeApiKey : window.revokeApiKey;
+  window.copyCode = typeof copyCode === 'function' ? copyCode : window.copyCode;
+  window.showLimitModal = typeof showLimitModal === 'function' ? showLimitModal : window.showLimitModal;
+  window.showReferralStats = typeof showReferralStats === 'function' ? showReferralStats : window.showReferralStats;
+  window.claimBonus = typeof claimBonus === 'function' ? claimBonus : window.claimBonus;
+  window.shareVia = typeof shareVia === 'function' ? shareVia : window.shareVia;
+  window.clearRecent = typeof clearRecent === 'function' ? clearRecent : window.clearRecent;
+  window.cancelJob = typeof cancelJob === 'function' ? cancelJob : window.cancelJob;
+  window.togglePdfPreview = typeof togglePdfPreview === 'function' ? togglePdfPreview : window.togglePdfPreview;
+  window.pdfPreviewPage = typeof pdfPreviewPage === 'function' ? pdfPreviewPage : window.pdfPreviewPage;
+  window.retryLastJob = typeof retryLastJob === 'function' ? retryLastJob : window.retryLastJob;
+  window.sendFailedFile = typeof sendFailedFile === 'function' ? sendFailedFile : window.sendFailedFile;
+  window.setEditorColor = typeof setEditorColor === 'function' ? setEditorColor : window.setEditorColor;
+  window.setEditorTool = typeof setEditorTool === 'function' ? setEditorTool : window.setEditorTool;
+  window.editorPrevPage = typeof editorPrevPage === 'function' ? editorPrevPage : window.editorPrevPage;
+  window.editorNextPage = typeof editorNextPage === 'function' ? editorNextPage : window.editorNextPage;
+  window.editorUndo = typeof editorUndo === 'function' ? editorUndo : window.editorUndo;
+  window.editorClick = typeof editorClick === 'function' ? editorClick : window.editorClick;
+  window.commitEditorText = typeof commitEditorText === 'function' ? commitEditorText : window.commitEditorText;
+  window.downloadEditedPdf = typeof downloadEditedPdf === 'function' ? downloadEditedPdf : window.downloadEditedPdf;
+  window.addBatchFile = typeof addBatchFile === 'function' ? addBatchFile : window.addBatchFile;
+  window.runBatch = typeof runBatch === 'function' ? runBatch : window.runBatch;
+  window.clearBatch = typeof clearBatch === 'function' ? clearBatch : window.clearBatch;
+  window.downloadBatchItem = typeof downloadBatchItem === 'function' ? downloadBatchItem : window.downloadBatchItem;
+  window.clearSig = typeof clearSig === 'function' ? clearSig : window.clearSig;
+  window.addInvLine = typeof addInvLine === 'function' ? addInvLine : window.addInvLine;
+  window.copyOcrText = typeof copyOcrText === 'function' ? copyOcrText : window.copyOcrText;
+  window.connectCloud = typeof connectCloud === 'function' ? connectCloud : window.connectCloud;
+  window.disconnectCloud = typeof disconnectCloud === 'function' ? disconnectCloud : window.disconnectCloud;
+  window.loadCloudFiles = typeof loadCloudFiles === 'function' ? loadCloudFiles : window.loadCloudFiles;
+  window.createTeam = typeof createTeam === 'function' ? createTeam : window.createTeam;
+  window.removeTeamMember = typeof removeTeamMember === 'function' ? removeTeamMember : window.removeTeamMember;
+  window.showTeamInviteForm = typeof showTeamInviteForm === 'function' ? showTeamInviteForm : window.showTeamInviteForm;
+  window.sendTeamInvite = typeof sendTeamInvite === 'function' ? sendTeamInvite : window.sendTeamInvite;
+  window.acceptTeamInvite = typeof acceptTeamInvite === 'function' ? acceptTeamInvite : window.acceptTeamInvite;
+  window.openContactModal = typeof openContactModal === 'function' ? openContactModal : window.openContactModal;
+  window.closeContactModal = typeof closeContactModal === 'function' ? closeContactModal : window.closeContactModal;
+  window.submitContact = typeof submitContact === 'function' ? submitContact : window.submitContact;
   }
 
   window.initPDFKit = function() { injectHTML(); initApp(); };
