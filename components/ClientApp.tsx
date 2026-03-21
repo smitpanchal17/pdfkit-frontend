@@ -38,9 +38,13 @@ function injectConfig(): void {
 interface Props {
     initialPage?: 'home' | 'tool';
     initialToolId?: string;
+    toolSlug?: string;    // from app/[tool]/page.tsx
+    toolTitle?: string;  // from app/[tool]/page.tsx
 }
 
-export default function ClientApp({ initialPage = 'home', initialToolId }: Props) {
+export default function ClientApp({ initialPage = 'home', initialToolId: _initialToolId, toolSlug, toolTitle }: Props) {
+    // toolSlug (from [tool]/page.tsx) and initialToolId are equivalent
+    const initialToolId = toolSlug || _initialToolId;
     useEffect(() => {
           injectConfig();
           // Load the app CSS immediately
