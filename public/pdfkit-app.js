@@ -6279,14 +6279,14 @@ document.addEventListener('click', (e) => {
 
   window.initPDFKit = function() { injectHTML(); initApp(); };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { injectHTML(); initApp(); });
-  } else {
-    injectHTML(); initApp();
-  }
-
   // ── Global function exports (called from onclick HTML attributes) ──
   window.startPayment  = startPayment;
   window.openAuthModal = openAuthModal;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() { injectHTML(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); } });
+  } else {
+    injectHTML(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); }
+  }
 
 })(window, document);
