@@ -26,7 +26,7 @@ export const viewport = { width: 'device-width', initialScale: 1, themeColor: '#
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="light">
       <head>
         <script dangerouslySetInnerHTML={{__html: "(function(){var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||'dark');if(!t)localStorage.setItem('theme','dark');})();"}} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
