@@ -55,7 +55,7 @@ export default function ClientApp({ initialPage = 'home', initialToolId }: Props
                                     w.pdfjsLib.GlobalWorkerOptions.workerSrc =
                                                 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
                           }
-                          loadScript('/pdfkit-app.js', () => {
+                          loadScript('/pdfkit-app.js?v=2', () => {
                                     if (initialToolId) {
                                                 const tryOpen = (attempts = 0) => {
                                                               if (typeof w.openTool === 'function') {
