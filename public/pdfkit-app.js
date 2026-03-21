@@ -2132,7 +2132,7 @@ async function processInvoiceGenerator() {
 
   function initApp() {
   // Reset stale dark theme: HTML default is light; only apply saved theme if it's light
-  try { if (localStorage.getItem('theme') === 'dark') { localStorage.removeItem('theme'); } } catch(e) {}
+  try { localStorage.removeItem('theme'); document.documentElement.setAttribute('data-theme','light'); } catch(e) {}
     if (_initialized) return;
     _initialized = true;
     injectCSS();
@@ -6286,7 +6286,7 @@ document.addEventListener('click', (e) => {
   }
 
   // ── Global function exports (called from onclick HTML attributes) ──
-  window.startPayment  = typeof startPayment  !== 'undefined' ? startPayment  : function() { console.warn('startPayment not ready'); };
-  window.openAuthModal = typeof openAuthModal !== 'undefined' ? openAuthModal : function() { console.warn('openAuthModal not ready'); };
+  window.startPayment  = startPayment;
+  window.openAuthModal = openAuthModal; };
 
 })(window, document);
