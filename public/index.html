@@ -1635,7 +1635,12 @@ async function completeOAuthSignIn(accessToken, supabaseUser) {
 // Development:  const API = 'http://localhost:3001'
 // Production:   const API = 'https://your-api.vercel.app'
 // Same-origin:  const API = ''   ← only works if frontend + backend on same domain
-const API = ''; // ← Set this to your Vercel backend URL after deploying pdfkit-backend
+const API = 'https://pdfkit-api.vercel.app'; // ← PDFKit backend URL
+
+// Expose to window for pdfkit-app.js runtime config bridge
+window._PDFKIT_API         = API;
+window._PDFKIT_SUPABASE_URL = SUPABASE_URL;
+window._PDFKIT_SUPABASE_ANON = SUPABASE_ANON_KEY;
 
 // ── Runtime config validation ─────────────────────────────
 (function() {
