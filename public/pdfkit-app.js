@@ -6283,6 +6283,10 @@ document.addEventListener('click', (e) => {
   window.startPayment  = startPayment;
   window.openAuthModal = openAuthModal;
 
+  // ── Guaranteed window exports BEFORE initApp ──
+  window.startPayment  = startPayment;
+  window.openAuthModal = openAuthModal;
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { injectHTML(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); } });
   } else {
