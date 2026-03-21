@@ -2144,9 +2144,9 @@ async function processInvoiceGenerator() {
     var w = window;
     if (w._PDFKIT_API && !w.API)
       try { eval('API = ' + JSON.stringify(w._PDFKIT_API)); } catch(e) {}
-    if (w._PDFKIT_SUPABASE_URL && typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL)
+    if (w._PDFKIT_SUPABASE_URL && !w.SUPABASE_URL)
       try { eval('SUPABASE_URL = ' + JSON.stringify(w._PDFKIT_SUPABASE_URL)); } catch(e) {}
-    if (w._PDFKIT_SUPABASE_ANON && typeof SUPABASE_ANON_KEY !== 'undefined' && !SUPABASE_ANON_KEY)
+    if (w._PDFKIT_SUPABASE_ANON && !w.SUPABASE_ANON_KEY)
       try { eval('SUPABASE_ANON_KEY = ' + JSON.stringify(w._PDFKIT_SUPABASE_ANON)); } catch(e) {}
 
 
@@ -2335,9 +2335,9 @@ const API = 'https://pdfkit-api.vercel.app'; // Backend URL
 // ── Runtime config validation ─────────────────────────────
 (function() {
   const missing = [];
-  if (typeof SUPABASE_URL !== 'undefined' && !SUPABASE_URL)
+  if (!window.SUPABASE_URL)
     missing.push('SUPABASE_URL');
-  if (typeof SUPABASE_ANON_KEY !== 'undefined' && !SUPABASE_ANON_KEY)
+  if (!window.SUPABASE_ANON_KEY)
     missing.push('SUPABASE_ANON_KEY');
   if (missing.length)
     console.warn('[PDFKit] Missing config:', missing.join(', '), '— see README.md');
