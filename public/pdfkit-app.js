@@ -2163,7 +2163,7 @@ window.addEventListener('load', function() {
   }
   // Init Supabase client after deferred supabase.js loads
   if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supabaseClient = window.supabase.createClient(window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL, window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON);
   }
 });
 
@@ -2242,7 +2242,7 @@ let supabaseClient = null;
 // Supabase.js is loaded with defer — init after window.load guarantees it's available
 window.addEventListener('load', function initSupabase() {
   if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    supabaseClient = window.supabase.createClient(window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL, window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON);
   }
 }, { once: true });
 
@@ -2335,9 +2335,9 @@ const API = 'https://pdfkit-api.vercel.app'; // Backend URL
 // ── Runtime config validation ─────────────────────────────
 (function() {
   const missing = [];
-  if (!window.SUPABASE_URL)
+  if (!window.SUPABASE_URL && !window._PDFKIT_SUPABASE_URL)
     missing.push('SUPABASE_URL');
-  if (!window.SUPABASE_ANON_KEY)
+  if (!window.SUPABASE_ANON_KEY && !window._PDFKIT_SUPABASE_ANON)
     missing.push('SUPABASE_ANON_KEY');
   if (missing.length)
     console.warn('[PDFKit] Missing config:', missing.join(', '), '— see README.md');
