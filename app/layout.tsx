@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   authors: [{ name: 'PDFKit' }],
   creator: 'PDFKit',
   robots: { index: true, follow: true },
+  verification: {
+    google: 'cJuWk1EJJZbQv1NAjtXuTL0kITVp5e4EDXzhAI8zVO0',
+  },
   openGraph: {
     type: 'website',
     siteName: 'PDFKit',
