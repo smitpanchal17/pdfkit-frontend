@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | PDFKit',
+  title: 'Privacy Policy',
   description: 'How PDFKit collects, uses, and protects your personal data.',
 };
 
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
       <h2>5. Third-Party Services</h2>
       <p>Supabase (auth), Razorpay (payments), Vercel (hosting) - each has its own privacy policy.</p>
       <h2>6. Contact</h2>
-      <p>Email: <a href="mailto:support@pdfkit.com">support@pdfkit.com</a></p>
+      <p>Email: <a href="mailto:support@pdfkit.com" style={{color:'#C6FF00'}}>support@pdfkit.com</a></p>
     </main>
   );
 }
