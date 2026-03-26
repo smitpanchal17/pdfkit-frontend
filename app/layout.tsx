@@ -1,11 +1,15 @@
 import type { Metadata } from 'next';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { CONFIG } from '@/lib/config';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL(CONFIG.SITE_URL),
-  title: { template: '%s | PDFKit', default: 'Free PDF Tools Online – Compress, Merge, Convert & More | PDFKit' },
+  title: {
+    template: '%s | PDFKit',
+    default: 'Free PDF Tools Online – Compress, Merge, Convert & More | PDFKit'
+  },
   description: '40+ browser-based PDF tools — compress, merge, split, convert, sign, and edit any PDF. No installation. No account needed.',
   keywords: ['pdf tools', 'compress pdf', 'merge pdf', 'pdf to word', 'free pdf editor online', 'pdf converter', 'split pdf', 'pdf compressor'],
   authors: [{ name: 'PDFKit' }],
@@ -30,7 +34,11 @@ export const metadata: Metadata = {
   manifest: '/site.webmanifest',
 };
 
-export const viewport = { width: 'device-width', initialScale: 1, themeColor: '#080810' };
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#080810'
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -50,6 +58,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div id="pdfkit-loading" aria-hidden="true" />
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
