@@ -4,7 +4,7 @@
   'use strict';
   var _injected = false;
   var _initialized = false;
-h
+
   // ── Inject full CSS into <head> ─────────────────────────────
   function injectCSS() {
     if (document.getElementById('pdfkit-styles')) return;
