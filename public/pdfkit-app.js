@@ -2244,15 +2244,40 @@ window.addEventListener('load', function initSupabase() {
   if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
     supabaseClient = window.supabase.createClient(window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL, window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON);
   }
+  // FIX: Run OAuth redirect handler AFTER supabaseClient is ready
+  handleOAuthRedirect();
 }, { once: true });
 
 // ── OAuth redirect callback ───────────────────────────────────
-// Supabase puts tokens in the URL hash after Google/Apple redirect.
-// We detect this on page load, extract the session, and sign the user in.
-(async function handleOAuthRedirect() {
+// Handles BOTH flows after Google/Apple redirect:
+//   1. PKCE flow: Supabase redirects with ?code=... (current default)
+//   2. Implicit flow: Supabase redirects with #access_token=... (legacy)
+// Called from window.load (after supabaseClient is initialized) to fix race condition.
+async function handleOAuthRedirect() {
   if (!supabaseClient) return;
   try {
-    // Check for OAuth tokens in URL hash (e.g. #access_token=...&type=recovery)
+    // ── PKCE flow: ?code= in query string (Supabase default since v2) ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    if (code) {
+      // Exchange the code for a session — Supabase client uses stored code_verifier automatically
+      const { data, error } = await supabaseClient.auth.exchangeCodeForSession(code);
+      if (!error && data?.session?.access_token) {
+        const accessToken = data.session.access_token;
+        const user = data.session.user || data.user;
+        // Clean the ?code= from URL without reload
+        const cleanUrl = window.location.pathname;
+        history.replaceState(null, '', cleanUrl);
+        if (user) {
+          await completeOAuthSignIn(accessToken, user);
+        }
+      } else if (error) {
+        console.warn('[oauth-redirect] PKCE exchange error:', error.message);
+      }
+      return; // Don't fall through to hash check
+    }
+
+    // ── Implicit flow: #access_token= in hash (legacy / fallback) ──
     const hashParams = new URLSearchParams(window.location.hash.slice(1));
     const accessToken  = hashParams.get('access_token');
     const refreshToken = hashParams.get('refresh_token');
@@ -2275,7 +2300,7 @@ window.addEventListener('load', function initSupabase() {
       setTimeout(() => openAuthModal('reset'), 600);
     }
   } catch (e) { console.warn('[oauth-redirect]', e); }
-})();
+}
 
 async function completeOAuthSignIn(accessToken, supabaseUser) {
   // SEC FIX: Set access token temporarily so ensure-profile can authenticate.
