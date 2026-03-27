@@ -2250,6 +2250,31 @@ if (window.supabase) {
   );
 }
 
+// ── onAuthStateChange: react to SIGNED_IN / TOKEN_REFRESHED / SIGNED_OUT ──
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'SIGNED_IN' && session && session.user) {
+      if (!authState.user) {
+        await completeOAuthSignIn(session.access_token, session.user);
+      } else {
+        updateNavForAuth();
+      }
+    } else if (event === 'TOKEN_REFRESHED' && session && session.user) {
+      if (!authState.user) {
+        authState.user = {
+          id:    session.user.id,
+          email: session.user.email || '',
+          name:  session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User'
+        };
+        authState.plan = localStorage.getItem('plan') || 'free';
+        updateNavForAuth();
+      }
+    } else if (event === 'SIGNED_OUT') {
+      authState = { csrf: null, token: null, user: null, plan: 'free', usage: 0 };
+      updateNavForAuth();
+    }
+  });
+}
+
 // ── OAuth redirect callback ───────────────────────────────────
 // Handles BOTH flows after Google/Apple redirect:
 //   1. PKCE flow: Supabase redirects with ?code=... (current default)
@@ -2413,7 +2438,7 @@ function readCsrfCookie() {
 (async function initSession() {
   try {
     // Try to refresh using the HttpOnly refresh cookie
-    const { ok, data } = await fetch((window.API || '') + '/api/auth/refresh', {
+    const { ok, data } = await fetch(API + '/api/auth/refresh', {
       method:      'POST',
       credentials: 'include',
       headers:     { 'Content-Type': 'application/json' },
@@ -2889,7 +2914,7 @@ async function signInWithGoogle() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + window.location.pathname,
+      redirectTo: window.location.origin + '/auth/callback',
       queryParams: { access_type: 'offline', prompt: 'consent' }}});
   if (error) { showAuthErr(error.message); setSocialBtnLoading('googleBtn', false, 'Continue with Google'); }
   // On success: browser redirects → handleOAuthRedirect() fires on return
@@ -2904,7 +2929,7 @@ async function signInWithApple() {
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'apple',
     options: {
-      redirectTo: window.location.origin + window.location.pathname}});
+      redirectTo: window.location.origin + '/auth/callback'}});
   if (error) { showAuthErr(error.message); setSocialBtnLoading('appleBtn', false, 'Continue with Apple'); }
 }
 
