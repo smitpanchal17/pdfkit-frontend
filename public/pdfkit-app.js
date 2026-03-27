@@ -2238,21 +2238,23 @@ function sanitize(str) {
 const SUPABASE_URL      = 'https://snhcniagvrblgkwpafsw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaGNuaWFndnJibGdrd3BhZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTY4MjEsImV4cCI6MjA4OTU3MjgyMX0.sOL1IqFTgssvlBACEYN9CDY6jEAFcxPhiATdtHqM56M'; // anon key — safe to expose
 
+// FIX: pdfkit-app.js is loaded DYNAMICALLY (via loadScript()) AFTER window.load has
+// already fired. So window.addEventListener('load', ...) inside this file NEVER runs.
+// supabase.js is guaranteed to be loaded before pdfkit-app.js (see ClientApp.tsx),
+// so we can create supabaseClient immediately at the top level right here.
 let supabaseClient = null;
-// Supabase.js is loaded with defer — init after window.load guarantees it's available
-window.addEventListener('load', function initSupabase() {
-  if (!supabaseClient && (window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL) && window.supabase) {
-    supabaseClient = window.supabase.createClient(window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL, window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON);
-  }
-  // FIX: Run OAuth redirect handler AFTER supabaseClient is ready
-  handleOAuthRedirect();
-}, { once: true });
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(
+    window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL || SUPABASE_URL,
+    window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON || SUPABASE_ANON_KEY
+  );
+}
 
 // ── OAuth redirect callback ───────────────────────────────────
 // Handles BOTH flows after Google/Apple redirect:
 //   1. PKCE flow: Supabase redirects with ?code=... (current default)
 //   2. Implicit flow: Supabase redirects with #access_token=... (legacy)
-// Called from window.load (after supabaseClient is initialized) to fix race condition.
+// Called immediately as IIFE since supabaseClient is now ready at top level.
 async function handleOAuthRedirect() {
   if (!supabaseClient) return;
   try {
@@ -2301,6 +2303,8 @@ async function handleOAuthRedirect() {
     }
   } catch (e) { console.warn('[oauth-redirect]', e); }
 }
+// Run immediately — supabaseClient is already initialized above
+handleOAuthRedirect();
 
 async function completeOAuthSignIn(accessToken, supabaseUser) {
   // SEC FIX: Set access token temporarily so ensure-profile can authenticate.
