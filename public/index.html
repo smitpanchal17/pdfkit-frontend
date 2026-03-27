@@ -1469,6 +1469,18 @@ window.addEventListener('load', function() {
   // Init Supabase client after deferred supabase.js loads
   if (!supabaseClient && SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ✅ FIX: Sync existing session from localStorage into authState on every page load
+    // Without this, a valid stored session is never read back and the UI stays at Sign in
+    supabaseClient.auth.getSession().then(function(res) {
+      var session = res.data && res.data.session;
+      if (session) {
+        authState.token        = session.access_token;
+        authState.refreshToken = session.refresh_token;
+        authState.user         = session.user;
+        updateNavForAuth();
+      }
+    });
   }
 });
 
@@ -1548,6 +1560,17 @@ let supabaseClient = null;
 window.addEventListener('load', function initSupabase() {
   if (SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ✅ FIX: Sync existing session from localStorage into authState on every page load
+    supabaseClient.auth.getSession().then(function(res) {
+      var session = res.data && res.data.session;
+      if (session) {
+        authState.token        = session.access_token;
+        authState.refreshToken = session.refresh_token;
+        authState.user         = session.user;
+        updateNavForAuth();
+      }
+    });
   }
 }, { once: true });
 
