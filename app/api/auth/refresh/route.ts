@@ -6,10 +6,18 @@ const SUPABASE_ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
-    const refreshToken = body.refresh_token;
+    let refreshToken = body.refresh_token;
+
+    // If not in body, check cookies (for credentials: 'include' calls)
+    if (!refreshToken) {
+      refreshToken = request.cookies.get('__Host-pdfkit_rt')?.value 
+                  || request.cookies.get('pdfkit_rt')?.value;
+    }
+
     if (!refreshToken) {
       return NextResponse.json({ error: 'No refresh token' }, { status: 401 });
     }
+
     const resp = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=refresh_token`, {
       method: 'POST',
       headers: {
@@ -19,10 +27,12 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({ refresh_token: refreshToken }),
     });
+
     const data = await resp.json();
     if (!resp.ok) {
       return NextResponse.json({ error: data.error_description || 'Refresh failed' }, { status: resp.status });
     }
+
     return NextResponse.json({
       access_token: data.access_token,
       refresh_token: data.refresh_token,
