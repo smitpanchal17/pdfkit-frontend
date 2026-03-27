@@ -2249,32 +2249,6 @@ if (window.supabase) {
     window.SUPABASE_ANON_KEY || window._PDFKIT_SUPABASE_ANON || SUPABASE_ANON_KEY
   );
 }
-
-// ── onAuthStateChange: react to SIGNED_IN / TOKEN_REFRESHED / SIGNED_OUT ──
-  supabaseClient.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session && session.user) {
-      if (!authState.user) {
-        await completeOAuthSignIn(session.access_token, session.user);
-      } else {
-        updateNavForAuth();
-      }
-    } else if (event === 'TOKEN_REFRESHED' && session && session.user) {
-      if (!authState.user) {
-        authState.user = {
-          id:    session.user.id,
-          email: session.user.email || '',
-          name:  session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User'
-        };
-        authState.plan = localStorage.getItem('plan') || 'free';
-        updateNavForAuth();
-      }
-    } else if (event === 'SIGNED_OUT') {
-      authState = { csrf: null, token: null, user: null, plan: 'free', usage: 0 };
-      updateNavForAuth();
-    }
-  });
-}
-
 // ── OAuth redirect callback ───────────────────────────────────
 // Handles BOTH flows after Google/Apple redirect:
 //   1. PKCE flow: Supabase redirects with ?code=... (current default)
