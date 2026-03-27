@@ -4,7 +4,7 @@
   'use strict';
   var _injected = false;
   var _initialized = false;
-
+h
   // ── Inject full CSS into <head> ─────────────────────────────
   function injectCSS() {
     if (document.getElementById('pdfkit-styles')) return;
@@ -6397,7 +6397,6 @@ document.addEventListener('click', (e) => {
   window.openContactModal = typeof openContactModal === 'function' ? openContactModal : window.openContactModal;
   window.closeContactModal = typeof closeContactModal === 'function' ? closeContactModal : window.closeContactModal;
   window.submitContact = typeof submitContact === 'function' ? submitContact : window.submitContact;
-  }
 
   window.initPDFKit = function() { injectHTML(); initApp(); };
 
