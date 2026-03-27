@@ -2423,8 +2423,16 @@ function readCsrfCookie() {
       authState.csrf = data.csrf_token;
       // Fetch user profile now that we have a fresh session
       await loadCurrentUser();
+    } else if (supabaseClient) {
+      // ✅ FIX: Cookie refresh failed — check Supabase localStorage session.
+      // After Google OAuth, page.tsx exchanges the PKCE code and stores the
+      // session in localStorage. We pick it up here and complete sign-in so
+      // the backend sets an HttpOnly cookie and returns the full user profile.
+      const { data: sd } = await supabaseClient.auth.getSession().catch(() => ({ data: {} }));
+      if (sd && sd.session && sd.session.access_token) {
+        await completeOAuthSignIn(sd.session.access_token, sd.session.user);
+      }
     }
-    // If refresh fails, user is logged out — no action needed
   } catch (_) {}
 })();
 
