@@ -59,6 +59,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <div id="pdfkit-loading" aria-hidden="true" />
+        <script dangerouslySetInnerHTML={{__html: `
+          // Safety timeout: if SPA doesn't load in 8s, force hide the loading screen
+          setTimeout(function() {
+            var l = document.getElementById('pdfkit-loading');
+            if (l && !document.body.classList.contains('spa-loaded')) {
+              console.warn('[PDFKit] SPA load timeout - forcing loading screen hide');
+              l.style.display = 'none';
+              document.body.classList.add('spa-loaded');
+            }
+          }, 8000);
+        `}} />
         {children}
         <Analytics />
         <SpeedInsights />
