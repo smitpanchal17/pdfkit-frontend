@@ -2148,6 +2148,7 @@ async function processInvoiceGenerator() {
       try { eval('SUPABASE_URL = ' + JSON.stringify(w._PDFKIT_SUPABASE_URL)); } catch(e) {}
     if (w._PDFKIT_SUPABASE_ANON && !w.SUPABASE_ANON_KEY)
       try { eval('SUPABASE_ANON_KEY = ' + JSON.stringify(w._PDFKIT_SUPABASE_ANON)); } catch(e) {}
+    }
 
 
 // ═══════════════════════════════════════════════════════════════
