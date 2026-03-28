@@ -3078,6 +3078,7 @@ function otpBack(e, idx) {
   }
 }
 
+injectHTML();
 // Allow Enter key in auth modal
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('authModal')?.classList.contains('show')) {
