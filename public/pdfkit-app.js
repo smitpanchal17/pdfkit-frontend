@@ -2171,7 +2171,7 @@ window.addEventListener('load', function() {
 
 // ── CURSOR ────────────────────────────────────────────────────
 const cur = document.getElementById('cur');
-document.addEventListener('mousemove', e => { if(cur){ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+document.addEventListener('mousemove', e => { if(cur){ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; } });
 document.querySelectorAll('a,button,.tc,.dropzone,.ft').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('big'));
   el.addEventListener('mouseleave', () => cur.classList.remove('big'));
