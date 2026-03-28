@@ -4,6 +4,7 @@
   'use strict';
   var _injected = false;
   var _initialized = false;
+  var supabaseClient = null;
 
   // ── Inject full CSS into <head> ─────────────────────────────
   function injectCSS() {
@@ -2170,7 +2171,7 @@ window.addEventListener('load', function() {
 
 // ── CURSOR ────────────────────────────────────────────────────
 const cur = document.getElementById('cur');
-document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+document.addEventListener('mousemove', e => { if(cur){ cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
 document.querySelectorAll('a,button,.tc,.dropzone,.ft').forEach(el => {
   el.addEventListener('mouseenter', () => cur.classList.add('big'));
   el.addEventListener('mouseleave', () => cur.classList.remove('big'));
@@ -2178,7 +2179,7 @@ document.querySelectorAll('a,button,.tc,.dropzone,.ft').forEach(el => {
 
 // ── DARK MODE ─────────────────────────────────────────────────
 const themeBtn = document.getElementById('themeBtn');
-themeBtn.addEventListener('click', () => {
+if (themeBtn) themeBtn.addEventListener('click', () => {
   const d = document.documentElement.getAttribute('data-theme')==='dark';
   document.documentElement.setAttribute('data-theme', d?'light':'dark');
   themeBtn.textContent = d ? '🌙' : '☀️';
@@ -2243,7 +2244,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 // already fired. So window.addEventListener('load', ...) inside this file NEVER runs.
 // supabase.js is guaranteed to be loaded before pdfkit-app.js (see ClientApp.tsx),
 // so we can create supabaseClient immediately at the top level right here.
-let supabaseClient = null;
+supabaseClient = null; // moved to IIFE scope
 if (window.supabase) {
   supabaseClient = window.supabase.createClient(
     window.SUPABASE_URL || window._PDFKIT_SUPABASE_URL || SUPABASE_URL,
