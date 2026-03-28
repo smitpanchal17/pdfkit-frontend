@@ -3106,10 +3106,12 @@ const dlBtn       = document.getElementById('dlBtn');
 let heroDownloadUrl  = null; // signed URL from server
 let heroDownloadName = null;
 
+if (dz) {
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
 dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag'); handleFiles(e.dataTransfer.files); });
 dz.addEventListener('click', () => fi.click());
+}
 fi.addEventListener('change', e => handleFiles(e.target.files));
 
 function showError(msg) {
