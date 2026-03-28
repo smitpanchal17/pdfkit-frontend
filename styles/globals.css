@@ -5,23 +5,28 @@
     padding: 0;
 }
 
-/* Dark background immediately — no flash of white */
+/* Remove forced black background to debug black screen issue */
 html, body {
-    background: #0C0C0C;
-    color: #F2F2F2;
+    background: #ffffff; /* Default to white for debugging */
+    color: #111111;
     min-height: 100vh;
 }
 
-/* Loading spinner shown before SPA loads */
+/* Hide the problematic loading screen entirely */
 #pdfkit-loading {
+    display: none !important;
+}
+
+/* Fallback UI styling */
+#pdfkit-fallback-ui {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: #0C0C0C;
-}
-
-/* Hide loading once SPA is ready */
-.spa-loaded #pdfkit-loading {
-    display: none !important;
+    background: #ffffff;
+    color: #111111;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 20px;
 }
