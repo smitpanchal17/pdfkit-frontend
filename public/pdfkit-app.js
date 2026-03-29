@@ -2469,11 +2469,14 @@ async function apiCall(method, path, body, isFormData=false) {
     headers['X-CSRF-Token'] = authState.csrf;
   }
   if (!isFormData) headers['Content-Type'] = 'application/json';
+  const _apictrl = new AbortController(); const _apitimer = setTimeout(() => _apictrl.abort(), 8000);
   const res = await fetch(API + path, {
     method,
     headers,
     credentials: 'include',    // send HttpOnly auth cookie
+    signal:      _apictrl.signal,
     body: body ? (isFormData ? body : JSON.stringify(body)) : undefined});
+  clearTimeout(_apitimer);
   const data = await res.json().catch(() => ({ error: 'Server error' }));
   return { ok: res.ok, status: res.status, data };
 }
