@@ -2411,13 +2411,15 @@ function readCsrfCookie() {
 // On every page load, refresh the session via the HttpOnly cookie.
 // If the cookie exists and is valid, we get user info + a fresh CSRF token.
 // If not, the user is treated as logged out.
-(async function initSession() {
+async function initSession() {
   try {
     // Try to refresh using the HttpOnly refresh cookie
+    const _ctrl = new AbortController(); setTimeout(() => _ctrl.abort(), 5000);
     const { ok, data } = await fetch(API + '/api/auth/refresh', {
       method:      'POST',
       credentials: 'include',
       headers:     { 'Content-Type': 'application/json' },
+      signal:      _ctrl.signal,
     }).then(r => r.json().then(d => ({ ok: r.ok, data: d }))).catch(() => ({ ok: false, data: {} }));
 
     if (ok && data.csrf_token) {
@@ -2435,7 +2437,7 @@ function readCsrfCookie() {
       }
     }
   } catch (_) {}
-})();
+}
 
 
 // ── apiCallWithRetry — automatic retry for transient errors ──
