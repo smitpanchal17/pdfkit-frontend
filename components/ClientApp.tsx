@@ -59,7 +59,7 @@ export default function ClientApp({ initialPage = 'home', initialToolId: _initia
                                     w.pdfjsLib.GlobalWorkerOptions.workerSrc =
                                                 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
                           }
-                          loadScript('/pdfkit-app.js?v=7', () => {
+                          loadScript('/pdfkit-app.js?v=8', () => {
                                     // Hide the fallback UI once the SPA is ready
                                     const fallback = document.getElementById('pdfkit-fallback-ui');
                                     if (fallback) fallback.style.display = 'none';
