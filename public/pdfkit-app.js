@@ -6380,9 +6380,9 @@ document.addEventListener('click', (e) => {
   window.initPDFKit = function() { injectHTML(); initApp(); };
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { injectHTML(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); } });
+    document.addEventListener('DOMContentLoaded', function() { injectHTML(); initSession(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); } });
   } else {
-    injectHTML(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); }
+    injectHTML(); initSession(); try { initApp(); } catch(e) { console.warn('[PDFKit] initApp error:', e); }
   }
 
 })(window, document);
