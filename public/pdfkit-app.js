@@ -3795,12 +3795,25 @@ async function claimBonus() {
 // ── PAYMENTS ─────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════
 async function startPayment(plan) {
-  // Check for the presence of the auth cookie or CSRF token instead of just a JS variable
+  // Check auth first
   const hasSession = getCookie('__Host-pdfkit_at') || getCookie('pdfkit_csrf') || authState.token;
   if (!hasSession) { openAuthModal('login'); return; }
+
   const billing = yearly ? 'annual' : 'monthly';
 
   try {
+    // Dynamically load Razorpay if not present
+    if (typeof Razorpay === 'undefined') {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Failed to load Razorpay SDK'));
+        document.head.appendChild(script);
+      });
+    }
+
     // Step 1: Create Razorpay order
     const { ok, data } = await apiCall('POST', '/api/payments/create-order', { plan, billing });
     if (!ok) { showToast('⚠️ ' + (data.error || 'Could not start payment.')); return; }
@@ -3844,14 +3857,11 @@ async function startPayment(plan) {
       modal: {
         ondismiss: () => showToast('Payment cancelled.')}};
 
-    if (typeof Razorpay === 'undefined') {
-      showToast('⚠️ Payment system unavailable. Please refresh and try again.');
-      return;
-    }
     const rzp = new Razorpay(rzpOptions);
     rzp.open();
   } catch(e) {
-    showToast('Network error — check your connection.');
+    showToast('⚠️ Payment system error. Please refresh and try again.');
+    console.error('[startPayment]', e);
   }
 }
 
