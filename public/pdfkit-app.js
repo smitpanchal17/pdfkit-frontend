@@ -2458,16 +2458,23 @@ async function apiCallWithRetry(method, path, body, maxRetries = 2) {
 
 // ─── Standard API call (fetch-based, JSON responses) ────────
 // SEC FIX: sends credentials (cookies) + X-CSRF-Token header for mutations
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
 async function apiCall(method, path, body, isFormData=false) {
   const headers = {};
   // SEC FIX: token is in HttpOnly cookie — send automatically via credentials:'include'
+  // Read CSRF token from the non-HttpOnly cookie set by backend
+  const csrfToken = getCookie('pdfkit_csrf') || authState.csrf;
+  if (csrfToken) headers['X-CSRF-Token'] = csrfToken;
+
   // For backward compat with developer API, still send Authorization if token is present
   if (authState.token) headers['Authorization'] = 'Bearer ' + authState.token;
-  // Add CSRF token for state-mutating methods
-  const MUTATION_METHODS = new Set(['POST','PUT','PATCH','DELETE']);
-  if (MUTATION_METHODS.has(method.toUpperCase()) && authState.csrf) {
-    headers['X-CSRF-Token'] = authState.csrf;
-  }
+
   if (!isFormData) headers['Content-Type'] = 'application/json';
   const _apictrl = new AbortController(); const _apitimer = setTimeout(() => _apictrl.abort(), 8000);
   const res = await fetch(API + path, {
@@ -3788,7 +3795,9 @@ async function claimBonus() {
 // ── PAYMENTS ─────────────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════════
 async function startPayment(plan) {
-  if (!authState.token) { openAuthModal('login'); return; }
+  // Check for the presence of the auth cookie or CSRF token instead of just a JS variable
+  const hasSession = getCookie('__Host-pdfkit_at') || getCookie('pdfkit_csrf') || authState.token;
+  if (!hasSession) { openAuthModal('login'); return; }
   const billing = yearly ? 'annual' : 'monthly';
 
   try {
