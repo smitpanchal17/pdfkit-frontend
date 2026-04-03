@@ -10,7 +10,8 @@ export async function POST(request: NextRequest) {
 
     // If not in body, check cookies (for credentials: 'include' calls)
     if (!refreshToken) {
-      refreshToken = request.cookies.get('__Host-pdfkit_rt')?.value 
+      refreshToken = request.cookies.get('__Secure-pdfkit_rt')?.value
+                  || request.cookies.get('__Host-pdfkit_rt')?.value 
                   || request.cookies.get('pdfkit_rt')?.value;
     }
 

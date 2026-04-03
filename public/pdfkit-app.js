@@ -2265,7 +2265,7 @@ async function handleOAuthRedirect() {
         const cleanUrl = window.location.pathname;
         history.replaceState(null, '', cleanUrl);
         if (user) {
-          await completeOAuthSignIn(accessToken, user);
+          await completeOAuthSignIn(data.session || { access_token: accessToken, user });
         }
       } else if (error) {
         console.warn('[oauth-redirect] PKCE exchange error:', error.message);
@@ -2284,7 +2284,11 @@ async function handleOAuthRedirect() {
       await supabaseClient.auth.setSession({ access_token: accessToken, refresh_token: refreshToken });
       const { data: { user } } = await supabaseClient.auth.getUser();
       if (user) {
-        await completeOAuthSignIn(accessToken, user);
+        await completeOAuthSignIn({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+          user
+        });
         // Clean the hash from URL without reload
         history.replaceState(null, '', window.location.pathname + window.location.search);
       }
@@ -2300,19 +2304,29 @@ async function handleOAuthRedirect() {
 // Run immediately — supabaseClient is already initialized above
 handleOAuthRedirect();
 
-async function completeOAuthSignIn(accessToken, supabaseUser) {
+async function completeOAuthSignIn(sessionOrAccessToken, supabaseUser) {
+  const session = typeof sessionOrAccessToken === 'string'
+    ? { access_token: sessionOrAccessToken, user: supabaseUser }
+    : (sessionOrAccessToken || {});
+  const accessToken = session.access_token;
+  const refreshToken = session.refresh_token || null;
+  const user = session.user || supabaseUser;
+
+  if (!accessToken) return;
+
   // SEC FIX: Set access token temporarily so ensure-profile can authenticate.
   // The backend will respond with a cookie + csrf_token, after which we clear this.
   authState.token = accessToken;   // temporary — cleared after ensure-profile succeeds
 
   // Ensure profile row exists on backend + get plan
   try {
-    const { ok, data } = await apiCall('POST', '/api/auth/ensure-profile', {});
+    const payload = refreshToken ? { refresh_token: refreshToken } : {};
+    const { ok, data } = await apiCall('POST', '/api/auth/ensure-profile', payload);
     if (ok) {
       // Switch to cookie-based auth — clear the in-memory token
       authState.csrf  = data.csrf_token || readCsrfCookie();
       authState.token = null;   // SEC FIX: token is now in HttpOnly cookie
-      authState.user  = data.user;
+      authState.user  = data.user || user || null;
       authState.plan  = data.user?.plan || 'free';
       localStorage.setItem('plan', authState.plan);
       updateNavForAuth();
@@ -2408,10 +2422,13 @@ async function initSession() {
   try {
     // Try to refresh using the HttpOnly refresh cookie
     const _ctrl = new AbortController(); setTimeout(() => _ctrl.abort(), 5000);
+    const csrfToken = getCookie('pdfkit_csrf') || authState.csrf;
+    const headers = { 'Content-Type': 'application/json' };
+    if (csrfToken) headers['X-CSRF-Token'] = csrfToken;
     const { ok, data } = await fetch(API + '/api/auth/refresh', {
       method:      'POST',
       credentials: 'include',
-      headers:     { 'Content-Type': 'application/json' },
+      headers,
       signal:      _ctrl.signal,
     }).then(r => r.json().then(d => ({ ok: r.ok, data: d }))).catch(() => ({ ok: false, data: {} }));
 
@@ -2426,7 +2443,7 @@ async function initSession() {
       // the backend sets an HttpOnly cookie and returns the full user profile.
       const { data: sd } = await supabaseClient.auth.getSession().catch(() => ({ data: {} }));
       if (sd && sd.session && sd.session.access_token) {
-        await completeOAuthSignIn(sd.session.access_token, sd.session.user);
+        await completeOAuthSignIn(sd.session);
       }
     }
   } catch (_) {}
@@ -2605,7 +2622,7 @@ function pollJob(jobId, { onProgress, onComplete, onError } = {}) {
 }
 
 async function loadCurrentUser() {
-  if (!authState.token) return;
+  if (!authState.token && !authState.csrf && !getCookie('pdfkit_csrf')) return;
   const { ok, data } = await apiCall('GET', '/api/auth/me');
   if (ok) {
     authState.user      = data;
@@ -3789,7 +3806,7 @@ async function claimBonus() {
 // ═══════════════════════════════════════════════════════════════
 async function startPayment(plan) {
   // Check auth first
-  const hasSession = getCookie('__Host-pdfkit_at') || getCookie('pdfkit_csrf') || authState.token;
+  const hasSession = getCookie('pdfkit_csrf') || authState.csrf || authState.token || authState.user;
   if (!hasSession) { openAuthModal('login'); return; }
 
   const billing = yearly ? 'annual' : 'monthly';
