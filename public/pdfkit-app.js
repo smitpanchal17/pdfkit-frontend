@@ -2141,14 +2141,7 @@ async function processInvoiceGenerator() {
     var loading = document.getElementById('pdfkit-loading');
     if (loading) loading.style.display = 'none';
 
-    // Runtime config bridge for Next.js mode
-    var w = window;
-    if (w._PDFKIT_API && !w.API)
-      try { eval('API = ' + JSON.stringify(w._PDFKIT_API)); } catch(e) {}
-    if (w._PDFKIT_SUPABASE_URL && !w.SUPABASE_URL)
-      try { eval('SUPABASE_URL = ' + JSON.stringify(w._PDFKIT_SUPABASE_URL)); } catch(e) {}
-    if (w._PDFKIT_SUPABASE_ANON && !w.SUPABASE_ANON_KEY)
-      try { eval('SUPABASE_ANON_KEY = ' + JSON.stringify(w._PDFKIT_SUPABASE_ANON)); } catch(e) {}
+    // Runtime config is read from window._PDFKIT_* when the constants below are declared.
     }
 
 
@@ -2360,7 +2353,7 @@ async function completeOAuthSignIn(accessToken, supabaseUser) {
 // Development:  const API = 'https://pdfkit-api.vercel.app'
 // Production:   const API = 'https://your-api.vercel.app'
 // Same-origin:  const API = ''   ← only works if frontend + backend on same domain
-const API = 'https://pdfkit-api.vercel.app'; // Backend URL
+const API = window._PDFKIT_API || 'https://pdfkit-backend.vercel.app'; // Backend URL
 
 // ── Runtime config validation ─────────────────────────────
 (function() {

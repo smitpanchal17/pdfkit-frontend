@@ -1,10 +1,13 @@
 'use client';
 import { useEffect } from 'react';
+import { CONFIG } from '@/lib/config';
 
 const EXTERNAL_SCRIPTS = [
     'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js',
     'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
   ];
+
+const FALLBACK_API_URL = 'https://pdfkit-backend.vercel.app';
 
 function loadScript(src: string, onLoad?: () => void): void {
     if (document.querySelector(`script[src="${src}"]`)) { onLoad?.(); return; }
@@ -26,12 +29,18 @@ function injectConfig(): void {
     if (w._pdfkitConfigInjected) return;
     w._pdfkitConfigInjected = true;
     const script = document.createElement('script');
+    const runtimeConfig = {
+        apiUrl: CONFIG.API_URL || FALLBACK_API_URL,
+        supabaseUrl: CONFIG.SUPABASE_URL,
+        supabaseAnon: CONFIG.SUPABASE_ANON,
+        razorpayKey: CONFIG.RAZORPAY_KEY,
+    };
     script.textContent = `
-        window._PDFKIT_API = "https://pdfkit-api.vercel.app";
-            window._PDFKIT_SUPABASE_URL = "https://snhcniagvrblgkwpafsw.supabase.co";
-                window._PDFKIT_SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNuaGNuaWFndnJibGdrd3BhZnN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5OTY4MjEsImV4cCI6MjA4OTU3MjgyMX0.sOL1IqFTgssvlBACEYN9CDY6jEAFcxPhiATdtHqM56M";
-                    window._PDFKIT_RAZORPAY = "rzp_live_SPQF7pVYaGRfqj";
-                      `;
+        window._PDFKIT_API = ${JSON.stringify(runtimeConfig.apiUrl)};
+        window._PDFKIT_SUPABASE_URL = ${JSON.stringify(runtimeConfig.supabaseUrl)};
+        window._PDFKIT_SUPABASE_ANON = ${JSON.stringify(runtimeConfig.supabaseAnon)};
+        window._PDFKIT_RAZORPAY = ${JSON.stringify(runtimeConfig.razorpayKey)};
+    `;
     document.head.appendChild(script);
 }
 
@@ -59,7 +68,7 @@ export default function ClientApp({ initialPage = 'home', initialToolId: _initia
                                     w.pdfjsLib.GlobalWorkerOptions.workerSrc =
                                                 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
                           }
-                          loadScript('/pdfkit-app.js?v=8', () => {
+                          loadScript('/pdfkit-app.js?v=9', () => {
                                     // Hide the fallback UI once the SPA is ready
                                     const fallback = document.getElementById('pdfkit-fallback-ui');
                                     if (fallback) fallback.style.display = 'none';
