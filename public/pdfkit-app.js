@@ -2323,9 +2323,10 @@ async function completeOAuthSignIn(sessionOrAccessToken, supabaseUser) {
     const payload = refreshToken ? { refresh_token: refreshToken } : {};
     const { ok, data } = await apiCall('POST', '/api/auth/ensure-profile', payload);
     if (ok) {
-      // Switch to cookie-based auth — clear the in-memory token
+      // Keep token in memory for cross-origin API calls since __Host- cookies don't work cross-domain
       authState.csrf  = data.csrf_token || readCsrfCookie();
-      authState.token = null;   // SEC FIX: token is now in HttpOnly cookie
+      authState.token = data.access_token || accessToken;
+      if (authState.token) localStorage.setItem('sb_access_token', authState.token);
       authState.user  = data.user || user || null;
       authState.plan  = data.user?.plan || 'free';
       localStorage.setItem('plan', authState.plan);
@@ -2400,7 +2401,7 @@ let authState = {
   // It lives in an HttpOnly cookie (inaccessible to JS, including XSS).
   // We keep a CSRF token in memory to send as X-CSRF-Token header on mutations.
   csrf:       readCsrfCookie(),      // read once on load from non-HttpOnly cookie
-  token:      null,                  // kept for backward compatibility with apiCall()
+  token:      localStorage.getItem('sb_access_token') || null, // FIX: Fallback to local storage for cross-domain auth
   user:       null,
   plan:       localStorage.getItem('plan') || 'free',
   expiresAt:  localStorage.getItem('plan_expires') || null,
@@ -2434,6 +2435,10 @@ async function initSession() {
 
     if (ok && data.csrf_token) {
       authState.csrf = data.csrf_token;
+      if (data.access_token) {
+        authState.token = data.access_token;
+        localStorage.setItem('sb_access_token', data.access_token);
+      }
       // Fetch user profile now that we have a fresh session
       await loadCurrentUser();
     } else if (supabaseClient) {
@@ -2683,6 +2688,8 @@ async function doLogout() {
   await apiCall('POST', '/api/auth/logout');
   // SEC FIX: HttpOnly cookie cleared by backend's /api/auth/logout
   localStorage.removeItem('plan');
+  localStorage.removeItem('sb_access_token');
+  if (typeof supabaseClient !== 'undefined' && supabaseClient) await supabaseClient.auth.signOut().catch(() => {});
   authState = { csrf: null, token: null, user: null, plan: 'free', usage: 0 };
   document.getElementById('accountMenu')?.remove();
   updateNavForAuth();
@@ -2854,9 +2861,10 @@ function showAuthErr(msg) { errEl.textContent = msg; errEl.style.display='block'
     } else {
       const { ok, data } = await apiCall('POST', '/api/auth/login', { email, password: pass });
       if (ok) {
-        // SEC FIX: access_token is in HttpOnly cookie — we only get csrf_token
+        // Fallback: access_token might be blocked if cookies cross-origin, keeping it in memory
         authState.csrf  = data.csrf_token || readCsrfCookie();
-        authState.token = null;   // no longer stored in JS
+        authState.token = data.access_token || null;
+        if (authState.token) localStorage.setItem('sb_access_token', authState.token);
         authState.user  = data.user;
         authState.plan  = data.user?.plan || 'free';
         localStorage.setItem('plan', authState.plan);
@@ -3032,9 +3040,10 @@ async function verifyPhoneOTP() {
   try {
     const { ok, data } = await apiCall('POST', '/api/auth/verify-otp', { phone: currentPhone, token });
     if (ok) {
-      // SEC FIX: token is in HttpOnly cookie
+      // Fallback: token in HttpOnly cookie may strip cross-origin
       authState.csrf  = data.csrf_token || readCsrfCookie();
-      authState.token = null;
+      authState.token = data.access_token || null;
+      if (authState.token) localStorage.setItem('sb_access_token', authState.token);
       authState.user  = data.user;
       authState.plan  = data.user?.plan || 'free';
       localStorage.setItem('plan', authState.plan);
