@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import type { Metadata } from 'next';
 import { CONFIG } from '@/lib/config';
 
 declare global {
@@ -169,8 +168,57 @@ export default function PricingPage() {
   const annualSavings = (p: (typeof PLANS)[number]) =>
     Math.round(100 - (p.annual / (p.monthly * 12)) * 100);
 
+  const pricingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'GetPDFKit Pricing',
+    url: 'https://www.getpdfkit.com/pricing',
+    description: 'GetPDFKit pricing plans: Free, Pro (₹249/mo), Pro+ (₹399/mo), Business (₹799/mo).',
+    mainEntity: {
+      '@type': 'ItemList',
+      name: 'GetPDFKit Plans',
+      itemListElement: [
+        {
+          '@type': 'ListItem', position: 1,
+          item: { '@type': 'Offer', name: 'Free Plan', price: '0', priceCurrency: 'INR',
+                  description: '3 operations/day, 25 MB files, basic tools',
+                  seller: { '@type': 'Organization', name: 'GetPDFKit' } },
+        },
+        {
+          '@type': 'ListItem', position: 2,
+          item: { '@type': 'Offer', name: 'Pro Plan', price: '249', priceCurrency: 'INR',
+                  description: '50 operations/day, 200 MB files, priority processing, no ads',
+                  priceSpecification: { '@type': 'UnitPriceSpecification', price: '249',
+                    priceCurrency: 'INR', unitCode: 'MON' },
+                  seller: { '@type': 'Organization', name: 'GetPDFKit' } },
+        },
+        {
+          '@type': 'ListItem', position: 3,
+          item: { '@type': 'Offer', name: 'Pro+ Plan', price: '399', priceCurrency: 'INR',
+                  description: 'Unlimited operations, 1 GB files, batch processing, no ads',
+                  priceSpecification: { '@type': 'UnitPriceSpecification', price: '399',
+                    priceCurrency: 'INR', unitCode: 'MON' },
+                  seller: { '@type': 'Organization', name: 'GetPDFKit' } },
+        },
+        {
+          '@type': 'ListItem', position: 4,
+          item: { '@type': 'Offer', name: 'Business Plan', price: '799', priceCurrency: 'INR',
+                  description: 'Unlimited operations, 1 GB files, API access, 5 team seats',
+                  priceSpecification: { '@type': 'UnitPriceSpecification', price: '799',
+                    priceCurrency: 'INR', unitCode: 'MON' },
+                  seller: { '@type': 'Organization', name: 'GetPDFKit' } },
+        },
+      ],
+    },
+  };
+
   return (
-    <main style={{ minHeight: '100vh', background: '#0C0C0F', color: '#F2F2F2', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '60px 24px 80px' }}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }}
+      />
+      <main style={{ minHeight: '100vh', background: '#0C0C0F', color: '#F2F2F2', fontFamily: "'Plus Jakarta Sans', sans-serif", padding: '60px 24px 80px' }}>
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: '48px' }}>
         <a href="/" style={{ display: 'inline-block', marginBottom: '32px', color: '#C6FF00', textDecoration: 'none', fontSize: '14px', fontWeight: 600, letterSpacing: '0.05em' }}>
@@ -329,5 +377,6 @@ export default function PricingPage() {
         ))}
       </div>
     </main>
+    </>
   );
 }
