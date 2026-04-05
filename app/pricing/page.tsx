@@ -118,7 +118,7 @@ export default function PricingPage() {
           order_id: order.order_id,
           amount: order.amount,
           currency: order.currency || 'INR',
-          name: 'PDFKit',
+          name: 'GetPDFKit',
           description: `${plan.name} — ${billing}`,
           handler: async (response: {
             razorpay_payment_id: string;
@@ -172,7 +172,7 @@ export default function PricingPage() {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name: 'GetPDFKit Pricing',
-    url: 'https://www.getpdfkit.com/pricing',
+    url: `${CONFIG.SITE_URL}/pricing`,
     description: 'GetPDFKit pricing plans: Free, Pro (₹249/mo), Pro+ (₹399/mo), Business (₹799/mo).',
     mainEntity: {
       '@type': 'ItemList',

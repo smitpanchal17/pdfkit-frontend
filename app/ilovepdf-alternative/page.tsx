@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import ClientApp from '@/components/ClientApp';
 import { TOOLS } from '@/lib/tools';
+import { CONFIG } from '@/lib/config';
 
 export const metadata: Metadata = {
   title: 'Best iLovePDF Alternative — Free, No Signup | PDFKit',
   description:
     'Looking for an iLovePDF alternative? PDFKit offers 40+ free PDF tools with India-first pricing from ₹249/month. No watermarks. No signup needed for free use.',
-  alternates: { canonical: '/ilovepdf-alternative' },
+  alternates: { canonical: `${CONFIG.SITE_URL}/ilovepdf-alternative` },
 };
 
 const FEATURE_COMPARE = [
@@ -27,10 +28,10 @@ const PAGE_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name: 'Best iLovePDF Alternative — GetPDFKit vs iLovePDF Comparison',
-    url: 'https://www.getpdfkit.com/ilovepdf-alternative',
+    url: `${CONFIG.SITE_URL}/ilovepdf-alternative`,
     description: 'Detailed feature comparison of GetPDFKit vs iLovePDF: tools, file limits, pricing, privacy, and India-specific features.',
     about: [
-      { '@type': 'SoftwareApplication', name: 'GetPDFKit', url: 'https://www.getpdfkit.com' },
+      { '@type': 'SoftwareApplication', name: 'GetPDFKit', url: CONFIG.SITE_URL },
       { '@type': 'SoftwareApplication', name: 'iLovePDF', url: 'https://www.ilovepdf.com' },
     ],
   },
