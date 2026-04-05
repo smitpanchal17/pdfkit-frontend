@@ -8,8 +8,8 @@ export const CONFIG = {
   SUPABASE_URL:     process.env.NEXT_PUBLIC_SUPABASE_URL     || '',
   SUPABASE_ANON:    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '',
   RAZORPAY_KEY:     process.env.NEXT_PUBLIC_RAZORPAY_KEY     || '',
-  SITE_URL:         process.env.NEXT_PUBLIC_SITE_URL         || 'https://pdfkit.com',
-  SITE_NAME:        'PDFKit',
+  SITE_URL:         process.env.NEXT_PUBLIC_SITE_URL         || 'https://www.getpdfkit.com',
+  SITE_NAME:        'GetPDFKit',
   SITE_TAGLINE:     'Free PDF Tools Online',
 };
 
