@@ -22,11 +22,67 @@ const FEATURE_COMPARE = [
   { feature: 'Batch processing',        pdfkit: '✅ Pro+ plan',         ilovepdf: '✅ Premium plan' },
 ];
 
+const PAGE_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Best iLovePDF Alternative — GetPDFKit vs iLovePDF Comparison',
+    url: 'https://www.getpdfkit.com/ilovepdf-alternative',
+    description: 'Detailed feature comparison of GetPDFKit vs iLovePDF: tools, file limits, pricing, privacy, and India-specific features.',
+    about: [
+      { '@type': 'SoftwareApplication', name: 'GetPDFKit', url: 'https://www.getpdfkit.com' },
+      { '@type': 'SoftwareApplication', name: 'iLovePDF', url: 'https://www.ilovepdf.com' },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Is GetPDFKit better than iLovePDF?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'GetPDFKit offers more free tools (40+ vs 25+), a higher free file size limit (25MB vs 15MB), India-first pricing in INR (₹249/month vs USD), and unique features like an invoice generator and dark mode that iLovePDF does not have.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Does GetPDFKit work without creating an account?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. GetPDFKit allows up to 3 free PDF operations per day with files up to 25MB without creating an account or providing an email address.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the pricing difference between GetPDFKit and iLovePDF?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'GetPDFKit charges ₹249/month (approximately $3 USD) billed in Indian Rupees. iLovePDF charges from $6.61/month billed in USD. For Indian users, GetPDFKit is significantly more affordable and avoids currency conversion fees.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Are PDF files safe to upload to GetPDFKit?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. GetPDFKit transfers all files over HTTPS and automatically deletes them 60 minutes after processing. Files are never permanently stored, read, or shared.',
+        },
+      },
+    ],
+  },
+];
+
 export default function IlovepdfAlternativePage() {
   const topTools = TOOLS.slice(0, 12);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(PAGE_SCHEMA) }}
+      />
       <main
         id="tool-seo-content"
         style={{ maxWidth: '860px', margin: '0 auto', padding: '40px 24px 60px',
