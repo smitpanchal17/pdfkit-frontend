@@ -1,0 +1,31 @@
+# GetPDFKit
+> 40+ free browser-based PDF tools. No installation. No account needed for basic use.
+> India-first pricing from ₹249/month. Files auto-deleted after 60 minutes.
+
+## Core Tools
+- /compress-pdf: Compress PDF files online — reduce size by up to 90% without quality loss
+- /merge-pdf: Merge multiple PDF files into one document online for free
+- /split-pdf: Split PDF into separate pages or custom ranges
+- /pdf-to-word: Convert PDF to editable Word (DOCX) with formatting preserved
+- /word-to-pdf: Convert Word documents to PDF, pixel-perfect
+- /pdf-to-excel: Extract tables from PDF to Excel spreadsheet
+- /pdf-to-jpg: Convert PDF pages to high-resolution JPG images
+- /jpg-to-pdf: Combine JPG images into a single PDF
+- /rotate-pdf: Rotate PDF pages to correct orientation
+- /protect-pdf: Add password protection to PDF files
+- /unlock-pdf: Remove password from PDF files
+- /sign-pdf: Add electronic signature to PDF
+- /watermark-pdf: Add text or image watermark to PDF
+- /redact-pdf: Permanently redact sensitive text from PDF
+- /edit-pdf: Annotate, highlight and edit PDF content
+- /ocr-pdf: Extract text from scanned PDF using OCR
+
+## Pricing
+- /pricing: Free plan (3 ops/day, 25MB), Pro ₹249/mo, Pro+ ₹399/mo, Business ₹799/mo
+
+## Comparison
+- /ilovepdf-alternative: GetPDFKit vs iLovePDF — 40+ vs 25+ tools, ₹249 vs USD pricing
+
+## Company
+- /about: About GetPDFKit — browser-based PDF toolkit, India-first pricing, privacy-first
+- /privacy: Privacy policy — files auto-deleted after 60 minutes, never stored permanently
