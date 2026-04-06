@@ -53,7 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
         <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
         <script src="https://checkout.razorpay.com/v1/checkout.js" async />
-        <script src="/auth-patch.js" defer />
+        <script src="/auth-patch.js?v=3" defer />
       </head>
       <body>
         <div id="pdfkit-loading" aria-hidden="true" />
