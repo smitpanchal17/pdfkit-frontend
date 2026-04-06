@@ -6,6 +6,9 @@
  * 4. FIX: Handles OAuth hash tokens (#access_token=...) after page load
  *    Race condition: pdfkit-app.js sets _PDFKIT_SUPABASE_URL/_PDFKIT_SUPABASE_ANON
  *    during window.load. This patch waits for those globals then processes tokens.
+ * 5. FIX: submitAuth() calls updateAuthModal() in its finally block which resets
+ *    authErr/authSuccess display to 'none', silently hiding all error and success
+ *    feedback. Patch window.submitAuth to restore visible messages after the call.
  */
 (function pdfkitAuthPatch() {
     'use strict';
@@ -113,5 +116,37 @@
    window.addEventListener('load', function() {
          setTimeout(handleOAuthHashFallback, 300);
    });
+
+   // 5. FIX: submitAuth() calls updateAuthModal() in its finally block which always
+   //    sets authErr.style.display = 'none' and authSuccess.style.display = 'none',
+   //    wiping error/success messages before the user can read them.
+   //
+   //    Root cause: updateAuthModal() is designed to reset the modal when switching
+   //    modes (login→signup), but is also called from finally to reset the button
+   //    label — hiding any message that was just set in the catch/else blocks.
+   //
+   //    Fix: wrap window.submitAuth (invoked by onclick="submitAuth()" on the button)
+   //    so that after the original async function resolves we restore any message
+   //    element that has content but was hidden by the finally→updateAuthModal chain.
+   function patchSubmitAuth() {
+         if (!window.submitAuth || window._submitAuthPatched) return;
+         window._submitAuthPatched = true;
+         var orig = window.submitAuth;
+         window.submitAuth = async function () {
+                 await orig();
+                 // By now the finally block has run and hidden both message elements.
+                 // If either still has text content the user needs to see it.
+                 var errEl = document.getElementById('authErr');
+                 var okEl  = document.getElementById('authSuccess');
+                 if (errEl && errEl.textContent.trim()) errEl.style.display = 'block';
+                 if (okEl  && okEl.textContent.trim())  okEl.style.display  = 'block';
+         };
+   }
+
+   // pdfkit-app.js loads asynchronously — poll until window.submitAuth is set
+   (function waitForSubmitAuth(attempts) {
+         if (window.submitAuth) { patchSubmitAuth(); return; }
+         if (attempts < 40) setTimeout(function () { waitForSubmitAuth(attempts + 1); }, 250);
+   })(0);
 
 })();
