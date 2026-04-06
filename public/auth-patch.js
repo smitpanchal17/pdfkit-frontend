@@ -133,11 +133,14 @@
          window._submitAuthPatched = true;
          var orig = window.submitAuth;
          window.submitAuth = async function () {
-                 await orig();
-                 // By now the finally block has run and hidden both message elements.
-                 // If either still has text content the user needs to see it.
+                 // Clear stale messages from previous calls so we don't restore them.
                  var errEl = document.getElementById('authErr');
                  var okEl  = document.getElementById('authSuccess');
+                 if (errEl) { errEl.textContent = ''; errEl.style.display = 'none'; }
+                 if (okEl)  { okEl.textContent  = ''; okEl.style.display  = 'none'; }
+                 await orig();
+                 // By now the finally block has run and hidden both message elements.
+                 // If either has text content from this call, restore its visibility.
                  if (errEl && errEl.textContent.trim()) errEl.style.display = 'block';
                  if (okEl  && okEl.textContent.trim())  okEl.style.display  = 'block';
          };
