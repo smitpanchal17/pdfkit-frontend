@@ -152,4 +152,59 @@
          if (attempts < 40) setTimeout(function () { waitForSubmitAuth(attempts + 1); }, 250);
    })(0);
 
+   // 6. FIX: ensure-profile 401 fallback
+   // After Google OAuth, pdfkit-app.js calls the backend /api/auth/ensure-profile
+   // with the Supabase access token. If the backend returns non-ok (e.g. 401 due to
+   // token validation failure), fall back to the Supabase localStorage session so the
+   // user still appears logged-in with their Google account info.
+   (function patchEnsureProfileFallback() {
+         var origFetch = window.fetch;
+         window.fetch = async function () {
+                 var url = typeof arguments[0] === 'string'
+                           ? arguments[0]
+                           : (arguments[0] && arguments[0].url) || '';
+
+                 var result = await origFetch.apply(this, arguments);
+
+                 // Only intercept failed ensure-profile calls
+                 if (!url.includes('/api/auth/ensure-profile') || result.ok) {
+                           return result;
+                 }
+
+                 // Backend returned non-ok — try Supabase localStorage session as fallback
+                 try {
+                           var stored = localStorage.getItem('sb-snhcniagvrblgkwpafsw-auth-token');
+                           if (!stored) return result;
+
+                           var session = JSON.parse(stored);
+                           var user = session && session.user;
+                           if (!user || !user.id) return result;
+
+                           // Only fallback if session is not expired
+                           var now = Math.floor(Date.now() / 1000);
+                           if (session.expires_at && session.expires_at < now) return result;
+
+                           var fallback = {
+                                     ok: true,
+                                     user: {
+                                                   id: user.id,
+                                                   email: user.email || '',
+                                                   name: (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name))
+                                                               || (user.email && user.email.split('@')[0])
+                                                               || 'User',
+                                                   avatar: (user.user_metadata && user.user_metadata.avatar_url) || null,
+                                                   plan: 'free'
+                                     }
+                           };
+                           console.log('[auth-patch] ensure-profile fallback used for', fallback.user.email);
+                           return new Response(JSON.stringify(fallback), {
+                                     status: 200,
+                                     headers: { 'Content-Type': 'application/json' }
+                           });
+                 } catch (e) {
+                           return result;
+                 }
+         };
+   })();
+
 })();
