@@ -23,7 +23,7 @@
 }
 [data-theme="dark"]{
   --bg:#0C0C0C;--bg2:#161616;--bg3:#202020;--bg4:#2a2a2a;
-  --text:#F2F2F2;--text2:#aaa;--muted:#666;
+  --text:#F2F2F2;--text2:#aaa;--muted:#888;
   --border:#2e2e2e;--card:#161616;--nav-bg:rgba(12,12,12,0.93);
   --shadow:4px 4px 0 #2e2e2e;--shadow-lg:6px 6px 0 #2e2e2e;
 }
@@ -381,7 +381,7 @@ h1{position:relative;z-index:1;font-family:'Bricolage Grotesque',sans-serif;font
 .tc.cai .tc-title{color:#e8c8ff;}.tc.cai .tc-desc{color:rgba(255,255,255,.55);}.tc.cai .tc-arr{color:#c39fff;}.tc.cai .tc-icon{filter:none;}
 .tc.cai:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 #5a2d8a;}
 .tc.cai .tc-badge{background:var(--purple);color:#fff;border-color:#7b3fd4;}
-.tc.ccl{background:#e8f8ff;}.tc.ccl .tc-badge{background:var(--sky);}
+.tc.ccl{background:#e8f8ff;}.tc.ccl .tc-badge{background:var(--sky);color:#111;}
 [data-theme="dark"] .tc.cai{background:linear-gradient(135deg,#200a40,#0d1f40);}
 .tc.cun{background:linear-gradient(135deg,#0a2a1a,#1a2a0a);} [data-theme="dark"] .tc.cun{background:linear-gradient(135deg,#0a2a1a,#1a2a0a);}
 [data-theme="dark"] .tc.ccl{background:#001a2a;} [data-theme="dark"] .tc.ccl{background:#001a2a;}
@@ -392,7 +392,7 @@ h1{position:relative;z-index:1;font-family:'Bricolage Grotesque',sans-serif;font
 .tc-desc{font-size:12px;color:var(--text2);line-height:1.4;}
 .tc-arr{position:absolute;top:18px;right:18px;font-size:15px;color:var(--text);transition:transform .2s cubic-bezier(.34,1.56,.64,1);}
 .tc:hover .tc-arr{transform:translate(3px,-3px);}
-.tc-badge{position:absolute;top:10px;right:32px;background:var(--coral);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:100px;}
+.tc-badge{position:absolute;top:10px;right:32px;background:var(--coral);color:#111;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:8px;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border-radius:100px;}
 .no-res{display:none;grid-column:1/-1;text-align:center;padding:50px;font-size:17px;color:var(--muted);}
 
 /* ═══ BEFORE / AFTER ═══ */
@@ -554,7 +554,7 @@ footer{background:var(--text);color:#fff;padding:64px 36px 36px;}
 .fl-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#fff;letter-spacing:-.03em;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
 .fl-box{width:32px;height:32px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;}
 .fl-tag{font-size:13px;color:rgba(255,255,255,.35);line-height:1.7;max-width:220px;}
-.fc h5{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px;}
+.fc h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px;}
 .fc ul{list-style:none;}
 .fc li{margin-bottom:9px;}
 .fc a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
@@ -1023,7 +1023,7 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
       
     </div>
   </div>
-  <div class="tools-grid" id="tg" role="list" aria-label="PDF tools">
+  <div class="tools-grid" id="tg" aria-label="PDF tools">
     <a href="/merge-pdf" class="tc cl" data-cat="organize" data-name="merge pdf combine join"><div class="tc-badge">Popular</div><div class="tc-icon">📄</div><div class="tc-title">Merge PDF</div><div class="tc-desc">Combine multiple PDFs into one file</div><div class="tc-arr">↗</div></a>
     <a href="/split-pdf" class="tc cc" data-cat="organize" data-name="split pdf extract pages separate"><div class="tc-icon">✂️</div><div class="tc-title">Split PDF</div><div class="tc-desc">Extract pages or split into multiple files</div><div class="tc-arr">↗</div></a>
     <a href="/compress-pdf" class="tc cs" data-cat="optimize" data-name="compress pdf reduce size smaller"><div class="tc-badge">Popular</div><div class="tc-icon">🗜️</div><div class="tc-title">Compress PDF</div><div class="tc-desc">Shrink file size without losing quality</div><div class="tc-arr">↗</div></a>
@@ -1308,10 +1308,10 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
       <div class="fl-logo"><div class="fl-box">PK</div>PDFKit</div>
       <p class="fl-tag">The all-in-one PDF toolkit for people who have better things to do than fight with files.</p>
     </div>
-    <div class="fc"><h5>Tools</h5><ul><li><a href="/merge-pdf">Merge PDF</a></li><li><a href="/split-pdf">Split PDF</a></li><li><a href="/compress-pdf">Compress PDF</a></li><li><a href="/edit-pdf">Edit PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/rotate-pdf">Rotate PDF</a></li><li><a href="/delete-pdf-pages">Delete Pages</a></li><li><a href="/extract-pdf-pages">Extract Pages</a></li></ul></div>
-    <div class="fc"><h5>Convert</h5><ul><li><a href="/pdf-to-word">PDF to Word</a></li><li><a href="/pdf-to-jpg">PDF to JPG</a></li><li><a href="/pdf-to-png">PDF to PNG</a></li><li><a href="/pdf-to-excel">PDF to Excel</a></li><li><a href="/pdf-to-powerpoint">PDF to PowerPoint</a></li><li><a href="/pdf-to-text">PDF to Text</a></li><li><a href="/pdf-to-html">PDF to HTML</a></li><li><a href="/word-to-pdf">Word to PDF</a></li><li><a href="/excel-to-pdf">Excel to PDF</a></li><li><a href="/powerpoint-to-pdf">PowerPoint to PDF</a></li><li><a href="/png-to-pdf">PNG to PDF</a></li><li><a href="/html-to-pdf">HTML to PDF</a></li></ul></div>
-    <div class="fc"><h5>Security</h5><ul><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/redact-pdf">Redact PDF</a></li><li><a href="/add-watermark">Add Watermark</a></li><li><a href="/remove-watermark">Remove Watermark</a></li></ul></div>
-    <div class="fc"><h5>Company</h5><ul><li><a href="/about">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#" onclick="openContactModal();return false;">Contact Us</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+    <div class="fc"><h4>Tools</h4><ul><li><a href="/merge-pdf">Merge PDF</a></li><li><a href="/split-pdf">Split PDF</a></li><li><a href="/compress-pdf">Compress PDF</a></li><li><a href="/edit-pdf">Edit PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/rotate-pdf">Rotate PDF</a></li><li><a href="/delete-pdf-pages">Delete Pages</a></li><li><a href="/extract-pdf-pages">Extract Pages</a></li></ul></div>
+    <div class="fc"><h4>Convert</h4><ul><li><a href="/pdf-to-word">PDF to Word</a></li><li><a href="/pdf-to-jpg">PDF to JPG</a></li><li><a href="/pdf-to-png">PDF to PNG</a></li><li><a href="/pdf-to-excel">PDF to Excel</a></li><li><a href="/pdf-to-powerpoint">PDF to PowerPoint</a></li><li><a href="/pdf-to-text">PDF to Text</a></li><li><a href="/pdf-to-html">PDF to HTML</a></li><li><a href="/word-to-pdf">Word to PDF</a></li><li><a href="/excel-to-pdf">Excel to PDF</a></li><li><a href="/powerpoint-to-pdf">PowerPoint to PDF</a></li><li><a href="/png-to-pdf">PNG to PDF</a></li><li><a href="/html-to-pdf">HTML to PDF</a></li></ul></div>
+    <div class="fc"><h4>Security</h4><ul><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/redact-pdf">Redact PDF</a></li><li><a href="/add-watermark">Add Watermark</a></li><li><a href="/remove-watermark">Remove Watermark</a></li></ul></div>
+    <div class="fc"><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#" onclick="openContactModal();return false;">Contact Us</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
   </div>
   <div class="foot-btm">
     <span class="fcopy">© 2026 PDFKit — Every PDF Tool You Need</span>
