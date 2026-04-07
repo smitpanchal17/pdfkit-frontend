@@ -17,7 +17,7 @@
 :root{
   --lime:#C6FF00;--coral:#FF4D2E;--sky:#3BAFFF;--pink:#FF3CAC;--yellow:#FFD600;--mint:#00E5A0;--purple:#7b3fd4;
   --bg:#FFFFFF;--bg2:#F4F4F4;--bg3:#E8E8E8;--bg4:#DEDEDE;
-  --text:#0A0A0A;--text2:#555;--muted:#767676;
+  --text:#0A0A0A;--text2:#555;--muted:#6a6a6a;
   --border:#0A0A0A;--card:#FFFFFF;--nav-bg:rgba(255,255,255,0.93);
   --shadow:4px 4px 0 #0A0A0A;--shadow-lg:6px 6px 0 #0A0A0A;
 }
@@ -753,7 +753,6 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
 .tot-row.final{font-size:17px;font-weight:800;border-top:2px solid #111;padding-top:10px;margin-top:6px;}
 .notes{margin-top:32px;padding:16px;background:#f8f8f8;border-radius:8px;font-size:12px;color:#555;}
 [data-theme="light"] .eyebrow span{color:#c42b12;}
-[data-theme="light"]{--lime:#4a6e00;}
 [data-theme="dark"] .ba-inner .sec-sub{color:#5a5a5a;}
 `;
     document.head.appendChild(style);
