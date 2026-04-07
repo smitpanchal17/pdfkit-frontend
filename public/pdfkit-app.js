@@ -753,6 +753,7 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
 .tot-row.final{font-size:17px;font-weight:800;border-top:2px solid #111;padding-top:10px;margin-top:6px;}
 .notes{margin-top:32px;padding:16px;background:#f8f8f8;border-radius:8px;font-size:12px;color:#555;}
 [data-theme="light"] .eyebrow span{color:#c42b12;}
+[data-theme="light"] .ba-sz.after{color:#3d6600;}
 [data-theme="dark"] .ba-inner .sec-sub{color:#5a5a5a;}
 `;
     document.head.appendChild(style);
@@ -1087,7 +1088,7 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
 <!-- ═══ BEFORE / AFTER ═══ -->
 <div class="ba-wrap">
   <div class="ba-inner">
-    <div class="eyebrow" style="justify-content:center;color:rgba(255,255,255,.35)">✦ <span style="color:var(--lime)">Compress</span> — Real result</div>
+    <div class="eyebrow" style="justify-content:center;color:rgba(255,255,255,.62)">✦ <span style="color:var(--lime)">Compress</span> — Real result</div>
     <h2 class="sec-h">From bloated to blazing.</h2>
     <p class="sec-sub">Smart compression keeps your PDFs looking perfect — at a fraction of the size.</p>
     <div class="ba-row">

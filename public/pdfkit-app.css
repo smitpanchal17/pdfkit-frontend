@@ -743,5 +743,7 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
 /* ─── ACCESSIBILITY: light-mode overrides ─── */
 /* Coral accent on white/near-white fails WCAG — use darker coral in light mode */
 [data-theme="light"] .eyebrow span{color:#c42b12;}
+/* Lime on light ba-card (#f4f4f4) fails — use dark green in light mode */
+[data-theme="light"] .ba-sz.after{color:#3d6600;}
 /* Before/after dark-mode override: ba-card is dark (#1e1e1e); sec-sub needs dark text */
 [data-theme="dark"] .ba-inner .sec-sub{color:#5a5a5a;}
