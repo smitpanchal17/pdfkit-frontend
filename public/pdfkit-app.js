@@ -17,7 +17,7 @@
 :root{
   --lime:#C6FF00;--coral:#FF4D2E;--sky:#3BAFFF;--pink:#FF3CAC;--yellow:#FFD600;--mint:#00E5A0;--purple:#7b3fd4;
   --bg:#FFFFFF;--bg2:#F4F4F4;--bg3:#E8E8E8;--bg4:#DEDEDE;
-  --text:#0A0A0A;--text2:#555;--muted:#999;
+  --text:#0A0A0A;--text2:#555;--muted:#767676;
   --border:#0A0A0A;--card:#FFFFFF;--nav-bg:rgba(255,255,255,0.93);
   --shadow:4px 4px 0 #0A0A0A;--shadow-lg:6px 6px 0 #0A0A0A;
 }
@@ -399,7 +399,7 @@ h1{position:relative;z-index:1;font-family:'Bricolage Grotesque',sans-serif;font
 .ba-wrap{background:var(--text);padding:80px 36px;border-top:2px solid var(--border);border-bottom:2px solid var(--border);}
 .ba-inner{max-width:900px;margin:0 auto;text-align:center;}
 .ba-inner .sec-h{color:#fff;margin-bottom:10px;}
-.ba-inner .sec-sub{color:rgba(255,255,255,.45);margin:0 auto 44px;}
+.ba-inner .sec-sub{color:rgba(255,255,255,.65);margin:0 auto 44px;}
 .ba-row{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;}
 .ba-card{background:var(--bg2);border:2px solid rgba(255,255,255,.12);border-radius:18px;padding:28px 32px;min-width:180px;box-shadow:4px 4px 0 rgba(255,255,255,.08);}
 [data-theme="dark"] .ba-card{background:#1e1e1e;border-color:#333;}
@@ -437,7 +437,7 @@ h1{position:relative;z-index:1;font-family:'Bricolage Grotesque',sans-serif;font
 .bt-knob{width:19px;height:19px;background:var(--text);border-radius:50%;position:absolute;top:2px;left:2px;transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
 .bt-sw.on,.bt-sw.yearly{background:var(--lime);}
 .bt-sw.on .bt-knob,.bt-sw.yearly .bt-knob{transform:translateX(23px);}
-.save-tag{background:var(--coral);color:#fff;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:11px;padding:4px 10px;border-radius:100px;}
+.save-tag{background:var(--coral);color:#111;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:11px;padding:4px 10px;border-radius:100px;}
 /* ── PRICING GRID ───────────────────────────────────────────── */
 .pricing-grid{display:grid;grid-template-columns:1fr 1fr 1.18fr 1fr;gap:0;border:2.5px solid var(--border);border-radius:24px;overflow:visible;box-shadow:var(--shadow-lg);}
 .pc{background:var(--card);padding:32px 24px;position:relative;transition:background .2s;}
@@ -553,16 +553,16 @@ footer{background:var(--text);color:#fff;padding:64px 36px 36px;}
 .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr 0.7fr;gap:36px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:32px;max-width:1240px;margin-left:auto;margin-right:auto;}
 .fl-logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;color:#fff;letter-spacing:-.03em;display:flex;align-items:center;gap:9px;margin-bottom:12px;}
 .fl-box{width:32px;height:32px;background:var(--lime);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#000;}
-.fl-tag{font-size:13px;color:rgba(255,255,255,.35);line-height:1.7;max-width:220px;}
-.fc h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:14px;}
+.fl-tag{font-size:13px;color:rgba(255,255,255,.62);line-height:1.7;max-width:220px;}
+.fc h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:14px;}
 .fc ul{list-style:none;}
 .fc li{margin-bottom:9px;}
 .fc a{font-size:13px;color:rgba(255,255,255,.5);text-decoration:none;transition:color .2s;}
 .fc a:hover{color:#fff;}
 .foot-btm{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;}
-.fcopy{font-size:11px;color:rgba(255,255,255,.2);}
+.fcopy{font-size:11px;color:rgba(255,255,255,.55);}
 .fsocs{display:flex;gap:7px;}
-.fsoc{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:13px;text-decoration:none;transition:all .2s;}
+.fsoc{width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.52);font-size:13px;text-decoration:none;transition:all .2s;}
 .fsoc:hover{background:var(--lime);color:#000;border-color:var(--lime);}
 
 /* ═══ MOBILE NAV ═══ */
@@ -752,6 +752,9 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
 .tot-row{display:flex;justify-content:flex-end;gap:40px;padding:4px 0;font-size:13px;}
 .tot-row.final{font-size:17px;font-weight:800;border-top:2px solid #111;padding-top:10px;margin-top:6px;}
 .notes{margin-top:32px;padding:16px;background:#f8f8f8;border-radius:8px;font-size:12px;color:#555;}
+[data-theme="light"] .eyebrow span{color:#c42b12;}
+[data-theme="light"]{--lime:#4a6e00;}
+[data-theme="dark"] .ba-inner .sec-sub{color:#5a5a5a;}
 `;
     document.head.appendChild(style);
   }
@@ -1308,10 +1311,10 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
       <div class="fl-logo"><div class="fl-box">PK</div>PDFKit</div>
       <p class="fl-tag">The all-in-one PDF toolkit for people who have better things to do than fight with files.</p>
     </div>
-    <div class="fc"><h4>Tools</h4><ul><li><a href="/merge-pdf">Merge PDF</a></li><li><a href="/split-pdf">Split PDF</a></li><li><a href="/compress-pdf">Compress PDF</a></li><li><a href="/edit-pdf">Edit PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/rotate-pdf">Rotate PDF</a></li><li><a href="/delete-pdf-pages">Delete Pages</a></li><li><a href="/extract-pdf-pages">Extract Pages</a></li></ul></div>
-    <div class="fc"><h4>Convert</h4><ul><li><a href="/pdf-to-word">PDF to Word</a></li><li><a href="/pdf-to-jpg">PDF to JPG</a></li><li><a href="/pdf-to-png">PDF to PNG</a></li><li><a href="/pdf-to-excel">PDF to Excel</a></li><li><a href="/pdf-to-powerpoint">PDF to PowerPoint</a></li><li><a href="/pdf-to-text">PDF to Text</a></li><li><a href="/pdf-to-html">PDF to HTML</a></li><li><a href="/word-to-pdf">Word to PDF</a></li><li><a href="/excel-to-pdf">Excel to PDF</a></li><li><a href="/powerpoint-to-pdf">PowerPoint to PDF</a></li><li><a href="/png-to-pdf">PNG to PDF</a></li><li><a href="/html-to-pdf">HTML to PDF</a></li></ul></div>
-    <div class="fc"><h4>Security</h4><ul><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/redact-pdf">Redact PDF</a></li><li><a href="/add-watermark">Add Watermark</a></li><li><a href="/remove-watermark">Remove Watermark</a></li></ul></div>
-    <div class="fc"><h4>Company</h4><ul><li><a href="/about">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#" onclick="openContactModal();return false;">Contact Us</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
+    <div class="fc"><h3>Tools</h3><ul><li><a href="/merge-pdf">Merge PDF</a></li><li><a href="/split-pdf">Split PDF</a></li><li><a href="/compress-pdf">Compress PDF</a></li><li><a href="/edit-pdf">Edit PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/rotate-pdf">Rotate PDF</a></li><li><a href="/delete-pdf-pages">Delete Pages</a></li><li><a href="/extract-pdf-pages">Extract Pages</a></li></ul></div>
+    <div class="fc"><h3>Convert</h3><ul><li><a href="/pdf-to-word">PDF to Word</a></li><li><a href="/pdf-to-jpg">PDF to JPG</a></li><li><a href="/pdf-to-png">PDF to PNG</a></li><li><a href="/pdf-to-excel">PDF to Excel</a></li><li><a href="/pdf-to-powerpoint">PDF to PowerPoint</a></li><li><a href="/pdf-to-text">PDF to Text</a></li><li><a href="/pdf-to-html">PDF to HTML</a></li><li><a href="/word-to-pdf">Word to PDF</a></li><li><a href="/excel-to-pdf">Excel to PDF</a></li><li><a href="/powerpoint-to-pdf">PowerPoint to PDF</a></li><li><a href="/png-to-pdf">PNG to PDF</a></li><li><a href="/html-to-pdf">HTML to PDF</a></li></ul></div>
+    <div class="fc"><h3>Security</h3><ul><li><a href="/protect-pdf">Protect PDF</a></li><li><a href="/unlock-pdf">Unlock PDF</a></li><li><a href="/sign-pdf">Sign PDF</a></li><li><a href="/redact-pdf">Redact PDF</a></li><li><a href="/add-watermark">Add Watermark</a></li><li><a href="/remove-watermark">Remove Watermark</a></li></ul></div>
+    <div class="fc"><h3>Company</h3><ul><li><a href="/about">About</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#" onclick="openContactModal();return false;">Contact Us</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div>
   </div>
   <div class="foot-btm">
     <span class="fcopy">© 2026 PDFKit — Every PDF Tool You Need</span>
