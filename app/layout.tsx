@@ -61,7 +61,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Preconnect for Razorpay — loaded lazily below */}
         <link rel="preconnect" href="https://checkout.razorpay.com" />
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="DENY" />
         <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
         <script src="/auth-patch.js?v=3" defer />
       </head>

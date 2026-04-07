@@ -5,11 +5,25 @@
     padding: 0;
 }
 
-/* Remove forced black background to debug black screen issue */
+/* Base colors — dark theme applied by inline script before page renders */
 html, body {
-    background: #ffffff; /* Default to white for debugging */
+    background: #ffffff;
     color: #111111;
     min-height: 100vh;
+}
+[data-theme="dark"] body { background: #0c0c0c; color: #f2f2f2; }
+
+/* SEO content — in DOM for crawlers, invisible to users */
+#homepage-seo-content {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
 }
 
 /* Hide the problematic loading screen entirely */
