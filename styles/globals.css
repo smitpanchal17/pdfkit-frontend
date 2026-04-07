@@ -11,8 +11,8 @@ html, body {
     color: #111111;
     min-height: 100vh;
 }
-[data-theme="dark"] html,
-[data-theme="dark"] body { background: #0c0c0c; color: #f2f2f2; }
+html[data-theme="dark"],
+html[data-theme="dark"] body { background: #0c0c0c; color: #f2f2f2; }
 
 /* SEO content — in DOM for crawlers, invisible to users */
 #homepage-seo-content {
