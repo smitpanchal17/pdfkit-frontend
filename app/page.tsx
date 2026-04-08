@@ -18,7 +18,7 @@ const organizationSchema = {
   url: CONFIG.SITE_URL,
   logo: {
     '@type': 'ImageObject',
-    url: `${CONFIG.SITE_URL}/og-image.png`,
+    url: `${CONFIG.SITE_URL}/opengraph-image`,
     width: 1200,
     height: 630,
   },
@@ -31,6 +31,58 @@ const websiteSchema = {
   '@type': 'WebSite',
   name: 'GetPDFKit',
   url: CONFIG.SITE_URL,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: { '@type': 'EntryPoint', urlTemplate: `${CONFIG.SITE_URL}/{search_term_string}` },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'Is GetPDFKit free to use?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. GetPDFKit is free for basic use — up to 3 tasks per day with files up to 25 MB. No credit card or account required. Pro plans start at ₹249/month for unlimited operations and 1 GB file support.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Are my files kept private and secure?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. All files are transferred over HTTPS and stored in encrypted cloud buckets. Files are automatically deleted 1 hour after processing. GetPDFKit never reads your document content.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do I need to install software or create an account?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No installation or account is needed for free tasks. All tools run directly in your browser on Windows, Mac, Linux, iOS, and Android.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What is the maximum file size supported?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Free plan supports files up to 25 MB. Pro plan supports up to 200 MB. Pro+ and Business plans support up to 1 GB per file.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How many PDF tools does GetPDFKit offer?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'GetPDFKit offers 40+ PDF tools including compress, merge, split, rotate, convert (PDF to Word, Excel, PowerPoint, JPG), OCR, e-sign, protect, unlock, watermark, and more.',
+      },
+    },
+  ],
 };
 
 export default function HomePage() {
@@ -44,7 +96,7 @@ export default function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationSchema, websiteSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([organizationSchema, websiteSchema, faqSchema]) }}
       />
 
       <main

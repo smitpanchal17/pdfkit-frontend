@@ -47,18 +47,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title:       tool.seo.title,
       description: tool.seo.desc,
       url:         `${CONFIG.SITE_URL}/${tool.id}`,
-      images: [{
-        url:    `/og/${tool.id}.png`,
-        width:  1200,
-        height: 630,
-        alt:    tool.seo.title,
-      }],
+      // og:image auto-injected from app/[tool]/opengraph-image.tsx
     },
     twitter: {
       card:        'summary_large_image',
       title:       tool.seo.title,
       description: tool.seo.desc,
-      images:      [`/og/${tool.id}.png`],
+      // twitter:image auto-injected from app/[tool]/opengraph-image.tsx
     },
   };
 }
@@ -154,6 +149,24 @@ export default function ToolPage({ params }: PageProps) {
         name: f.q,
         acceptedAnswer: { '@type': 'Answer', text: f.a },
       })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: CONFIG.SITE_URL,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: tool.name,
+          item: `${CONFIG.SITE_URL}/${tool.id}`,
+        },
+      ],
     },
   ];
 

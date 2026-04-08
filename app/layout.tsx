@@ -35,13 +35,13 @@ export const metadata: Metadata = {
     url: CONFIG.SITE_URL,
     title: 'Free PDF Tools Online – Compress, Merge & Convert | GetPDFKit',
     description: '40+ free PDF tools — compress, merge, split, convert, sign, and edit any PDF. No installation. No account needed. Try free today.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'GetPDFKit - Free PDF Tools Online' }],
+    // og:image provided by app/opengraph-image.tsx (auto-generated PNG)
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Free PDF Tools Online | GetPDFKit',
     description: '40+ free PDF tools — compress, merge, convert, sign, edit. No signup.',
-    images: ['/og-image.png'],
+    // twitter:image provided by app/opengraph-image.tsx (auto-generated PNG)
   },
   icons: { icon: '/favicon.ico', apple: '/apple-touch-icon.png' },
   manifest: '/site.webmanifest',
@@ -58,8 +58,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={plusJakarta.variable} data-theme="light">
       <head>
         <script dangerouslySetInnerHTML={{__html: "(function(){var t=localStorage.getItem('theme');document.documentElement.setAttribute('data-theme',t||'dark');if(!t)localStorage.setItem('theme','dark');})();"}} />
-        {/* Preconnect for Razorpay — loaded lazily below */}
+        {/* Preconnects — reduce connection setup time for external resources (CWV) */}
         <link rel="preconnect" href="https://checkout.razorpay.com" />
+        <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
         <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
         <script src="/auth-patch.js?v=3" defer />
