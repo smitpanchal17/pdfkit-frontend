@@ -376,6 +376,81 @@ export default function PricingPage() {
           </span>
         ))}
       </div>
+
+      {/* USD Pricing for US/International users */}
+      <div style={{ maxWidth:'960px', margin:'48px auto 0', background:'#0d1620', border:'2px solid #3BAFFF', borderRadius:'14px', padding:'24px 28px' }}>
+        <h2 style={{ fontSize:'18px', fontWeight:800, color:'#fff', marginBottom:'6px' }}>Pricing in USD (United States &amp; International)</h2>
+        <p style={{ fontSize:'13px', color:'#666', marginBottom:'20px' }}>Your local currency is automatically applied at checkout. USD pricing for US users:</p>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:'12px' }}>
+          {[
+            { plan:'Free',           mo:'$0',     yr:'forever',        note:'No card needed' },
+            { plan:'Pro',            mo:'$5.99',  yr:'$59/yr',         note:'Save 18%' },
+            { plan:'Pro+ Unlimited', mo:'$8.99',  yr:'$79/yr',         note:'Save 27% · Most popular' },
+            { plan:'Business',       mo:'$15.99', yr:'$149/yr',        note:'5 seats' },
+          ].map(p => (
+            <div key={p.plan} style={{ background:'#111827', border:'1px solid #1e3a5f', borderRadius:'10px', padding:'14px', textAlign:'center' }}>
+              <div style={{ fontSize:'11px', color:'#888', marginBottom:'4px', textTransform:'uppercase', letterSpacing:'0.06em' }}>{p.plan}</div>
+              <div style={{ fontWeight:800, fontSize:'22px', color:'#3BAFFF' }}>{p.mo}<span style={{ fontSize:'12px', color:'#555', fontWeight:400 }}>/mo</span></div>
+              <div style={{ fontSize:'12px', color:'#aaa', marginTop:'2px' }}>{p.yr}</div>
+              <div style={{ fontSize:'11px', color:'#555', marginTop:'2px' }}>{p.note}</div>
+            </div>
+          ))}
+        </div>
+        <p style={{ fontSize:'12px', color:'#444', marginTop:'14px', marginBottom:0 }}>
+          Compare: Smallpdf costs $9/mo · ilovepdf ~$6/mo · PDF24 is free (ads). GetPDFKit Pro+ at $8.99/mo gives you the same unlimited features for less.
+        </p>
+      </div>
+
+      {/* Competitor comparison */}
+      <div style={{ maxWidth:'960px', margin:'40px auto 0' }}>
+        <h2 style={{ fontSize:'20px', fontWeight:800, color:'#fff', marginBottom:'16px' }}>How we compare to alternatives</h2>
+        <div style={{ overflowX:'auto' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:'13px' }}>
+            <thead>
+              <tr style={{ borderBottom:'2px solid #22223a' }}>
+                {['Tool','India price','US price','Free limit','Highlights'].map(h => (
+                  <th key={h} style={{ padding:'10px 14px', textAlign:'left', color:'#666', fontWeight:600, whiteSpace:'nowrap' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { name:'Smallpdf',  in:'~₹750/mo', us:'$9/mo',    free:'2 tasks/day',      hi:'Biggest brand, most expensive',           hl:false },
+                { name:'ilovepdf',  in:'₹500/mo',  us:'~$6/mo',   free:'2 tasks/day',      hi:'Popular, fewer tools',                    hl:false },
+                { name:'PDF24',     in:'Free',      us:'Free',     free:'Unlimited',        hi:'100% free, desktop app, ad-supported',    hl:false },
+                { name:'GetPDFKit', in:'₹249/mo',  us:'$5.99/mo', free:'3 tasks/day',      hi:'Cheapest Pro · 42 tools · INR billing ✦', hl:true  },
+              ].map(c => (
+                <tr key={c.name} style={{ borderBottom:'1px solid #1a1a2a', background: c.hl ? 'rgba(198,255,0,0.04)' : 'transparent' }}>
+                  <td style={{ padding:'12px 14px', fontWeight: c.hl ? 800 : 600, color: c.hl ? '#C6FF00' : '#ccc' }}>{c.name}</td>
+                  <td style={{ padding:'12px 14px', color: c.hl ? '#C6FF00' : '#aaa' }}>{c.in}</td>
+                  <td style={{ padding:'12px 14px', color: c.hl ? '#C6FF00' : '#aaa' }}>{c.us}</td>
+                  <td style={{ padding:'12px 14px', color:'#777' }}>{c.free}</td>
+                  <td style={{ padding:'12px 14px', color:'#666', fontSize:'12px' }}>{c.hi}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div style={{ maxWidth:'960px', margin:'48px auto 0' }}>
+        <h2 style={{ fontSize:'20px', fontWeight:800, color:'#fff', marginBottom:'16px' }}>Pricing FAQ</h2>
+        {[
+          { q:'Can I cancel anytime?',             a:'Yes. No contracts, no cancellation fees. Cancel from your account dashboard and keep Pro access until the end of your billing period.' },
+          { q:'Is GetPDFKit cheaper than Smallpdf?', a:'Yes. GetPDFKit Pro+ is ₹399/mo ($8.99/mo) vs Smallpdf at $9/mo (~₹750). Same unlimited tasks, OCR, and large files — for less.' },
+          { q:'What currencies do you accept?',    a:'INR via Razorpay (UPI, cards, net banking, wallets) for Indian users. USD, EUR, GBP for international users via card.' },
+          { q:'Is there a student or NGO discount?', a:'Email support@getpdfkit.com with proof of student or non-profit status for 50% off.' },
+          { q:'What happens when the free limit is hit?', a:'You\'ll see an upgrade prompt. You can still use all tools the next day, or upgrade to Pro for 50 tasks/day or Pro+ for unlimited.' },
+        ].map((faq, i) => (
+          <details key={i} style={{ background:'#111118', border:'1px solid #22223a', borderRadius:'10px', marginBottom:'8px', overflow:'hidden' }}>
+            <summary style={{ padding:'14px 20px', cursor:'pointer', fontWeight:600, fontSize:'14px', listStyle:'none', display:'flex', justifyContent:'space-between', alignItems:'center', color:'#ccc' }}>
+              {faq.q}<span style={{ color:'#555', marginLeft:'12px', flexShrink:0 }}>+</span>
+            </summary>
+            <p style={{ padding:'0 20px 14px', fontSize:'13px', color:'#777', lineHeight:1.7, margin:0 }}>{faq.a}</p>
+          </details>
+        ))}
+      </div>
     </main>
     </>
   );

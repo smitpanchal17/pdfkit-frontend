@@ -836,6 +836,10 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
           <div class="tm-proc-sub" id="tmProcSub">This usually takes just a few seconds</div>
           <div class="tm-prog-out"><div class="tm-prog-in" id="tmProgIn"></div></div>
           <div class="tm-prog-lbl"><span id="tmProgLbl">Uploading…</span><span id="tmProgPct">0%</span></div>
+          <!-- Processing-time ad — shown while user waits (captive audience) -->
+          <div id="tmProcAdWrap" style="margin-top:18px;min-height:90px;width:100%;max-width:400px;">
+            <ins id="tmProcAd" class="adsbygoogle" style="display:block;overflow:hidden;" data-ad-client="ca-pub-7220621763541803" data-ad-slot="1946157625" data-ad-format="auto" data-full-width-responsive="true"></ins>
+          </div>
         </div>
       </div>
       <!-- STEP 3: DONE -->
@@ -848,6 +852,15 @@ td{padding:10px 0;border-bottom:1px solid #f3f3f3;font-size:13px;}
             <button class="tm-btn" id="tmDlBtn">&#x2b07;&#xfe0f; Download</button>
             <button class="tm-btn sec" id="tmPreviewBtn" style="display:none;" onclick="togglePdfPreview()">&#x1f441; Preview</button>
             <button class="tm-btn sec" id="tmAgainBtn">Process another</button>
+          </div>
+          <!-- Email capture — shown once per session after first download -->
+          <div id="tmEmailCapture" style="display:none;margin-top:16px;padding:14px 16px;background:#111118;border:1.5px solid #2a2a4a;border-radius:10px;text-align:center;">
+            <div style="font-size:13px;font-weight:600;color:#ccc;margin-bottom:8px;">📧 Email yourself a download link</div>
+            <div style="display:flex;gap:8px;max-width:320px;margin:0 auto;">
+              <input type="email" id="tmEmailInput" placeholder="you@example.com" style="flex:1;padding:8px 12px;background:#1a1a2e;border:1.5px solid #3a3a5a;border-radius:8px;color:#fff;font-size:13px;outline:none;" />
+              <button onclick="submitEmailCapture()" style="background:#C6FF00;color:#000;border:none;border-radius:8px;padding:8px 14px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap;">Send</button>
+            </div>
+            <button onclick="document.getElementById('tmEmailCapture').style.display='none';localStorage.setItem('pdfkit_email_dismissed','1');" style="background:none;border:none;color:#666;font-size:12px;cursor:pointer;margin-top:8px;">No thanks</button>
           </div>
 
           <!-- Inline PDF preview -->
@@ -4594,6 +4607,8 @@ document.getElementById('tmProcessBtn').addEventListener('click', async () => {
   // Transition to step 2
   ['tmStep1','tmStep2','tmStep3'].forEach((id,i) => document.getElementById(id).classList.toggle('active', i===1));
   document.getElementById('tmErr').style.display = 'none';
+  // Push processing-time ad (user is waiting = captive audience)
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch(e) {}
 
   const isAI = tmTool?.isAI;
   const steps = isAI
@@ -4884,6 +4899,35 @@ function showTmDone(apiData) {
     const nudge = document.getElementById('tmUpgradeNudge');
     if (nudge) nudge.style.display = 'none';
   }
+
+  // Show email capture once per browser session (not if already dismissed or already captured)
+  const emailEl = document.getElementById('tmEmailCapture');
+  if (emailEl) {
+    const dismissed = localStorage.getItem('pdfkit_email_dismissed');
+    const captured  = localStorage.getItem('pdfkit_email_captured');
+    if (!dismissed && !captured) emailEl.style.display = '';
+    else emailEl.style.display = 'none';
+  }
+}
+
+async function submitEmailCapture() {
+  const input = document.getElementById('tmEmailInput');
+  const email = (input?.value||'').trim();
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    input && (input.style.borderColor = '#FF4D2E');
+    return;
+  }
+  const el = document.getElementById('tmEmailCapture');
+  try {
+    await fetch('/api/capture-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, tool: tmTool?.id || 'unknown' }),
+    });
+  } catch(e) {}
+  localStorage.setItem('pdfkit_email_captured', '1');
+  if (el) el.innerHTML = '<div style="font-size:13px;color:#00E5A0;font-weight:600;">✅ Check your inbox!</div>';
+  setTimeout(() => { if (el) el.style.display = 'none'; }, 2500);
 }
 
 function renderAiResult(apiData) {

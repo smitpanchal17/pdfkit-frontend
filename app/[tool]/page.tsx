@@ -22,6 +22,37 @@ import ClientApp from '@/components/ClientApp';
 import ToolPageContent from '@/components/ToolPageContent';
 import { CONFIG } from '@/lib/config';
 
+// HowTo steps per tool — drives HowTo schema for Google rich results
+const HOWTO_STEPS: Record<string, Array<{ name: string; text: string }>> = {
+  'compress-pdf':      [{ name:'Upload PDF', text:'Click the upload area or drag your PDF file in.' },{ name:'Choose level', text:'Select Light, Balanced, or Maximum compression.' },{ name:'Compress', text:'Click Compress PDF and wait a few seconds.' },{ name:'Download', text:'Download your compressed PDF, typically 40–90% smaller.' }],
+  'merge-pdf':         [{ name:'Upload files', text:'Drag multiple PDF files into the upload area.' },{ name:'Reorder', text:'Drag files to set the order for the merged PDF.' },{ name:'Merge', text:'Click Merge PDFs to combine all files.' },{ name:'Download', text:'Download the single merged PDF file.' }],
+  'split-pdf':         [{ name:'Upload PDF', text:'Upload the PDF you want to split.' },{ name:'Set ranges', text:'Enter page ranges or split method.' },{ name:'Split', text:'Click Split PDF to process.' },{ name:'Download', text:'Download the ZIP file of split documents.' }],
+  'rotate-pdf':        [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Select pages', text:'Choose which pages to rotate.' },{ name:'Choose angle', text:'Select 90°, 180°, or 270° rotation.' },{ name:'Download', text:'Download the corrected PDF.' }],
+  'delete-pdf-pages':  [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Enter pages', text:'Type the page numbers to remove (e.g. "2,5,8-10").' },{ name:'Delete', text:'Click Delete Pages to remove them.' },{ name:'Download', text:'Download the PDF with those pages removed.' }],
+  'pdf-to-word':       [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Convert', text:'Click Convert to Word.' },{ name:'Download', text:'Download the .docx file when ready.' },{ name:'Open', text:'Open in Microsoft Word, Google Docs, or LibreOffice.' }],
+  'word-to-pdf':       [{ name:'Upload Word', text:'Upload your .doc or .docx file.' },{ name:'Convert', text:'Click Convert to PDF.' },{ name:'Download', text:'Download the PDF with formatting preserved.' }],
+  'pdf-to-excel':      [{ name:'Upload PDF', text:'Upload your PDF containing tables.' },{ name:'Convert', text:'Click Convert to Excel.' },{ name:'Download', text:'Download the .xlsx file.' },{ name:'Open', text:'Open in Excel, Google Sheets, or LibreOffice Calc.' }],
+  'pdf-to-jpg':        [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Set quality', text:'Choose output image resolution.' },{ name:'Convert', text:'Click Convert to JPG.' },{ name:'Download', text:'Download the ZIP of JPG images.' }],
+  'jpg-to-pdf':        [{ name:'Upload images', text:'Upload one or more JPG images.' },{ name:'Order', text:'Drag to set the page order.' },{ name:'Convert', text:'Click Convert to PDF.' },{ name:'Download', text:'Download the PDF containing all images.' }],
+  'protect-pdf':       [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Set password', text:'Enter a strong password.' },{ name:'Protect', text:'Click Protect PDF.' },{ name:'Download', text:'Download the encrypted PDF.' }],
+  'unlock-pdf':        [{ name:'Upload PDF', text:'Upload your password-protected PDF.' },{ name:'Enter password', text:'Type the current password when prompted.' },{ name:'Unlock', text:'Click Unlock PDF.' },{ name:'Download', text:'Download the unlocked PDF.' }],
+  'sign-pdf':          [{ name:'Upload PDF', text:'Upload your PDF document.' },{ name:'Create signature', text:'Draw, type, or upload a signature image.' },{ name:'Place', text:'Position the signature on the page.' },{ name:'Download', text:'Download the signed PDF.' }],
+  'add-watermark':     [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Set watermark', text:'Enter text or upload an image watermark.' },{ name:'Adjust', text:'Set position, opacity, and rotation.' },{ name:'Download', text:'Download the watermarked PDF.' }],
+  'redact-pdf':        [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Select content', text:'Draw over sensitive content with the redaction tool.' },{ name:'Apply', text:'Click Apply Redactions.' },{ name:'Download', text:'Download the permanently redacted PDF.' }],
+  'edit-pdf':          [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Edit', text:'Add text, shapes, or annotations using the toolbar.' },{ name:'Save', text:'Click Save when done.' },{ name:'Download', text:'Download your edited PDF.' }],
+  'fill-pdf-forms':    [{ name:'Upload PDF', text:'Upload your PDF form.' },{ name:'Fill fields', text:'Click each form field and type your answers.' },{ name:'Complete', text:'Fill all required fields.' },{ name:'Download', text:'Download the completed form.' }],
+  'add-page-numbers':  [{ name:'Upload PDF', text:'Upload your PDF file.' },{ name:'Choose position', text:'Select number position and starting number.' },{ name:'Apply', text:'Click Add Page Numbers.' },{ name:'Download', text:'Download the numbered PDF.' }],
+};
+
+function getHowToSteps(toolId: string, toolName: string): Array<{ name: string; text: string }> {
+  return HOWTO_STEPS[toolId] || [
+    { name: 'Upload file',    text: `Click the upload area and select your file.` },
+    { name: 'Configure',      text: 'Set any options if required.' },
+    { name: 'Process',        text: `Click the button to start processing.` },
+    { name: 'Download',       text: 'Download your result when processing is complete.' },
+  ];
+}
+
 interface PageProps {
   params: { tool: string };
 }
@@ -129,8 +160,24 @@ export default function ToolPage({ params }: PageProps) {
   const related = getRelatedTools(tool);
   const faqs    = getFAQ(tool);
 
+  const howToSteps = getHowToSteps(tool.id, tool.name);
+
   // JSON-LD: SoftwareApplication + HowTo + FAQPage
   const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: `How to ${tool.name.toLowerCase()} online`,
+      description: tool.seo.desc,
+      tool: [{ '@type': 'HowToTool', name: 'GetPDFKit — Free Online PDF Tool' }],
+      step: howToSteps.map((s, i) => ({
+        '@type': 'HowToStep',
+        position: i + 1,
+        name: s.name,
+        text: s.text,
+        url: `${CONFIG.SITE_URL}/${tool.id}`,
+      })),
+    },
     {
       '@context': 'https://schema.org',
       '@type': 'SoftwareApplication',
