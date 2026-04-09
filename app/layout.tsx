@@ -66,6 +66,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
         <meta httpEquiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
         <script src="/auth-patch.js?v=3" defer />
+        {/* Google AdSense — Auto Ads (pub-7220621763541803) */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7220621763541803"
+          crossOrigin="anonymous"
+        />
       </head>
       <body>
         <div id="pdfkit-loading" aria-hidden="true" />
