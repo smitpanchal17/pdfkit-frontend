@@ -4162,6 +4162,31 @@ function openTool(toolId) {
 
   modal.classList.add('show');
   updatePageSEO(toolId);
+
+  // ── Usage counter banner inside modal (free users only) ────────────────
+  if (planIsFree()) {
+    let usage = {};
+    try { usage = JSON.parse(localStorage.getItem('pdfkit_usage') || '{}'); } catch(e) {}
+    const today = new Date().toISOString().slice(0, 10);
+    const used = (usage.date === today) ? (usage.count || 0) : 0;
+    const left = Math.max(0, PLAN_LIMITS.free - used);
+
+    let banner = document.getElementById('tmUsageBanner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.id = 'tmUsageBanner';
+      const modalBox = modal.querySelector('.tm-box') || modal.firstElementChild;
+      if (modalBox) modalBox.prepend(banner);
+    }
+    banner.style.display = left === 0 ? 'none' : '';
+    banner.innerHTML = `<div style="padding:7px 16px;background:#111118;border-bottom:1px solid #2a2a4a;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;">
+      <span style="color:#888;">${used}/${PLAN_LIMITS.free} free tasks used today</span>
+      <button onclick="document.getElementById('tmUsageBanner').style.display='none';showLimitModal();" style="background:transparent;color:#C6FF00;border:none;padding:0;font-size:12px;font-weight:700;cursor:pointer;">Upgrade →</button>
+    </div>`;
+  } else {
+    const banner = document.getElementById('tmUsageBanner');
+    if (banner) banner.style.display = 'none';
+  }
 }
 
 function closeTool() {
@@ -4828,6 +4853,37 @@ function showTmDone(apiData) {
 
   // Save to recent files
   saveRecent(outName, tmTool?.icon||'📄', 'Just processed', data?.path || null);
+
+  // ── Post-completion upgrade nudge for free users ───────────────────────
+  if (planIsFree()) {
+    let usage = {};
+    try { usage = JSON.parse(localStorage.getItem('pdfkit_usage') || '{}'); } catch(e) {}
+    const today = new Date().toISOString().slice(0, 10);
+    const used = (usage.date === today) ? (usage.count || 0) : 0;
+    const left = Math.max(0, PLAN_LIMITS.free - used);
+
+    let nudge = document.getElementById('tmUpgradeNudge');
+    if (!nudge) {
+      nudge = document.createElement('div');
+      nudge.id = 'tmUpgradeNudge';
+      const dlBtn = document.getElementById('tmDlBtn');
+      if (dlBtn && dlBtn.parentNode) dlBtn.parentNode.insertBefore(nudge, dlBtn.nextSibling);
+    }
+    nudge.style.display = '';
+    nudge.innerHTML = left === 0
+      ? `<div style="margin:16px 0 0;padding:14px 18px;background:#1a1a2e;border:2px solid #C6FF00;border-radius:12px;text-align:center;">
+           <div style="font-weight:700;font-size:14px;color:#C6FF00;margin-bottom:6px;">⚡ You've used all ${PLAN_LIMITS.free} free tasks today</div>
+           <div style="font-size:13px;color:#aaa;margin-bottom:12px;">Upgrade for unlimited tasks, 200MB files & priority speed</div>
+           <button onclick="document.getElementById('tmUpgradeNudge').style.display='none';showLimitModal();" style="background:#C6FF00;color:#000;border:none;border-radius:8px;padding:10px 20px;font-weight:700;font-size:14px;cursor:pointer;">Upgrade to Pro →</button>
+         </div>`
+      : `<div style="margin:16px 0 0;padding:12px 16px;background:#111118;border:1.5px solid #2a2a4a;border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+           <span style="font-size:13px;color:#888;">✅ Done · <strong style="color:#ccc">${left} free task${left===1?'':'s'}</strong> left today</span>
+           <button onclick="document.getElementById('tmUpgradeNudge').style.display='none';showLimitModal();" style="background:transparent;color:#C6FF00;border:1.5px solid #C6FF00;border-radius:7px;padding:6px 14px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap;">Get Unlimited →</button>
+         </div>`;
+  } else {
+    const nudge = document.getElementById('tmUpgradeNudge');
+    if (nudge) nudge.style.display = 'none';
+  }
 }
 
 function renderAiResult(apiData) {

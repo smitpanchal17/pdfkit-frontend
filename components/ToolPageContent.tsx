@@ -3,6 +3,7 @@
 // Pure HTML, no JS. Google sees this immediately.
 // ─────────────────────────────────────────────────────────────────────────────
 import type { Tool } from '@/lib/tools';
+import AdUnit from './AdUnit';
 
 interface Props {
   tool:         Tool;
@@ -130,6 +131,11 @@ export default function ToolPageContent({ tool, relatedTools, faqs }: Props) {
         ))}
       </ol>
 
+      {/* ── AdSense display ad — between steps and why-use (high engagement) */}
+      <div style={{ margin: '8px 0 32px', minHeight: '100px' }}>
+        <AdUnit slot="1946157625" />
+      </div>
+
       {/* ── H2: Why use ─────────────────────────────────────────────────── */}
       <h2 style={{ fontSize: '22px', fontWeight: 800, marginBottom: '12px' }}>
         Why {tool.name.toLowerCase()} your PDF?
@@ -218,6 +224,11 @@ export default function ToolPageContent({ tool, relatedTools, faqs }: Props) {
             </p>
           </details>
         ))}
+      </div>
+
+      {/* ── AdSense display ad — after FAQ (post-read, high intent) ────── */}
+      <div style={{ margin: '0 0 32px', minHeight: '100px' }}>
+        <AdUnit slot="1946157625" />
       </div>
 
       {/* ── Security trust signals ───────────────────────────────────────── */}
